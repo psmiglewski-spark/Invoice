@@ -14,6 +14,22 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Publikacje\Invoice\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +49,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>69AD126EAE7799C8F62A8562B504C9D67EDAA1EB</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Invoice_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mail, Version=3.0.20007.1248, Culture=neutral, PublicKeyToken=6dc438ab78a525b3, processorArchitecture=MSIL">
@@ -103,6 +131,26 @@
     <Compile Include="Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PrintReports\Invoice\InvoiceDataSet.Designer.cs">
+      <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintReports\Invoice\InvoiceDataSet1.Designer.cs">
+      <DependentUpon>InvoiceDataSet1.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintReports\Invoice\InvoiceDataSet2.Designer.cs">
+      <DependentUpon>InvoiceDataSet2.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintReports\Invoice\InvoiceInvoice.Designer.cs">
+      <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Page Include="MainWindow.xaml">
@@ -148,6 +196,12 @@
     <EmbeddedResource Include="PL_VAT_Invoice.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="PrintReports\Invoice\PL_VAT_Invoice_std.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="Config\config.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="InvoiceDataSet.xsc">
       <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
     </None>
@@ -192,6 +246,7 @@
     <None Include="InvoiceInvoice.xss">
       <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
     </None>
+    <None Include="Invoice_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Client.datasource" />
     <None Include="Properties\DataSources\DataBase.datasource" />
@@ -199,6 +254,50 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet.xsc">
+      <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InvoiceDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet.xss">
+      <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet1.xsc">
+      <DependentUpon>InvoiceDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InvoiceDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet1.xss">
+      <DependentUpon>InvoiceDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet2.xsc">
+      <DependentUpon>InvoiceDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InvoiceDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceDataSet2.xss">
+      <DependentUpon>InvoiceDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceInvoice.xsc">
+      <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceInvoice.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InvoiceInvoice.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PrintReports\Invoice\InvoiceInvoice.xss">
+      <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -219,5 +318,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 i x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,7 +16,7 @@ namespace Invoice
 
         public DataBase()
         {
-            properties.SetBackupProperties(System.IO.Directory.GetCurrentDirectory() + "\\config.ini");
+            properties.SetBackupProperties(System.IO.Directory.GetCurrentDirectory() + @"\Config\config.ini");
         }
         
 

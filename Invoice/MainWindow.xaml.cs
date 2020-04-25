@@ -26,11 +26,22 @@ namespace Invoice
         {
            
             InitializeComponent();
-            Reports reports = new Reports(1,1);
-            reports.ShowDialog();
-         
+            FakturaBtn.Click += FakturaBtn_Click;
+            FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;
             
 
+        }
+
+        private void DrukujMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Reports reports = new Reports(1, 1);
+            reports.ShowDialog();
+        }
+
+        private void FakturaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Reports reports = new Reports(1, 1);
+            reports.ShowDialog();
         }
     }
 }

@@ -7,5 +7,32 @@
         xmlns:winForms="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid/>
+    <Grid>
+        <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Top">
+            <Menu >
+                <MenuItem Header="_System">
+                    <MenuItem Header="_New" />
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+
+          <Menu x:Name ="FakturyMenu">
+            <MenuItem x:Name ="FakturyMenuItem" Header="Faktury">
+                <MenuItem x:Name ="FakturyDrukujMenuItem" Header="_Drukuj" />
+                <MenuItem x:Name ="FakturyOpenMenuItem" Header="_Open" />
+                <MenuItem x:Name ="FakturySaveMenuItem" Header="_Save" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+        </Menu>
+            <TextBox AcceptsReturn="True" />
+
+        </StackPanel>
+        
+        <Button x:Name="FakturaBtn" Content="Faktura" HorizontalAlignment="Left" Height="32" Margin="82,42,0,0" VerticalAlignment="Top" Width="72"/>
+    </Grid>
 </Window>
