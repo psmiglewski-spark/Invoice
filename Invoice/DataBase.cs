@@ -49,28 +49,7 @@ namespace Invoice
         // Insert queries
 
         //Adds new client
-        /*
-         * string NIP
-           ,string Name
-           ,string Short_Name
-           ,string Address_Street
-           ,string Address_Pos_Number
-           ,string Address_Loc_Number
-           ,string Address_Postal_Code
-           ,string Address_City
-           ,string Address_Country
-           ,string Client_Type
-           ,int Discount
-           ,string Payment_Method
-           ,string Phone_Number
-           ,string Account_Number
-           ,string Mobile_Phone
-           ,string SWIFT
-           ,string Account_Bank
-           ,string Email
-           ,int SplitPayment
-           ,string WWW
-         */
+        
         public void InsertClient(Client client)
         {
 
@@ -187,7 +166,9 @@ namespace Invoice
            ,[Gross_Value]
            ,[VAT_Value]
            ,[VAT]
-           ,[Issuing_User])
+           ,[Issuing_User]
+           ,[Currency]
+           ,[Currency_Change_Rate])
      VALUES
            (@Invoice_Number
            ,@ID_Client
@@ -210,7 +191,9 @@ namespace Invoice
            ,@Gross_Value
            ,@VAT_Value
            ,@VAT
-           ,@Issuing_User)";
+           ,@Issuing_User
+           ,@Currency
+           ,@Currency_Change_Rate)";
 
                 SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
                 sqlConnection.Open();
@@ -236,6 +219,8 @@ namespace Invoice
                 sqlCommand.Parameters.AddWithValue("@Vat_Value", invoice.VAT_Value);
                 sqlCommand.Parameters.AddWithValue("@VAT", invoice.VAT);
                 sqlCommand.Parameters.AddWithValue("@Issuing_User", invoice.Issuing_User);
+                sqlCommand.Parameters.AddWithValue("@Currency", invoice.Currency);
+                sqlCommand.Parameters.AddWithValue("@Currency_Change_Rate", invoice.Currency_Change_Rate);
                 sqlCommand.ExecuteScalar();
             }
             catch (Exception e)
@@ -309,6 +294,7 @@ namespace Invoice
         //Delete queries
 
         //Select queries
+        //Return Client table for reporting
         public DataTable SelectClient(int clientId)
         {
             var ds = new DataTable();
@@ -342,7 +328,7 @@ namespace Invoice
 
             return ds;
         }
-
+        //Return Invoice_Pos table for reporting
         public DataTable SelectInvoicePos(int invoiceId)
         {
             var ds = new DataTable();
@@ -377,7 +363,42 @@ namespace Invoice
 
             return ds;
         }
+        //Return Multiple VAT sums for invoice reporting
+        public DataTable ReportVatTableInvoicePos(int invoiceId)
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var sqlCommand = "select Sum(net_value) as Net_Value, sum(Vat_value) as VAT_Value, sum(Gross_value) as Gross_Value, VAT from invoice_pos where ID_Invoice =" + invoiceId + " group by VAT " ;
 
+            try
+            {
+
+                var da = new SqlDataAdapter(sqlCommand, sqlConnection);
+                da.Fill(ds);
+
+
+                // string addQuery = @"Select Top 1 * from Client";
+
+                //SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                //sqlConnection.Open();
+
+                //  sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+        //Return Invoice table for reporting
         public DataTable SelectInvoice(int invoiceId)
         {
             var ds = new DataTable();

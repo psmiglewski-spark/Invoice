@@ -122,15 +122,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InvoiceDataSet2.xsd</DependentUpon>
     </Compile>
+    <Compile Include="InvoiceDataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InvoiceDataSet3.xsd</DependentUpon>
+    </Compile>
     <Compile Include="InvoiceInvoice.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
     </Compile>
     <Compile Include="InvoicePosClass.cs" />
-    <Compile Include="Reports.xaml.cs">
-      <DependentUpon>Reports.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PrintReports\Invoice\InvoiceDataSet.Designer.cs">
       <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -151,8 +153,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="ReportsWindow.xaml.cs">
+      <DependentUpon>ReportsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="Vat_Table.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vat_Table.xsd</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,7 +180,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Reports.xaml">
+    <Page Include="ReportsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -235,6 +245,17 @@
     <None Include="InvoiceDataSet2.xss">
       <DependentUpon>InvoiceDataSet2.xsd</DependentUpon>
     </None>
+    <None Include="InvoiceDataSet3.xsc">
+      <DependentUpon>InvoiceDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="InvoiceDataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InvoiceDataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InvoiceDataSet3.xss">
+      <DependentUpon>InvoiceDataSet3.xsd</DependentUpon>
+    </None>
     <None Include="InvoiceInvoice.xsc">
       <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
     </None>
@@ -298,6 +319,17 @@
     </None>
     <None Include="PrintReports\Invoice\InvoiceInvoice.xss">
       <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
+    </None>
+    <None Include="Vat_Table.xsc">
+      <DependentUpon>Vat_Table.xsd</DependentUpon>
+    </None>
+    <None Include="Vat_Table.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Vat_Table.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Vat_Table.xss">
+      <DependentUpon>Vat_Table.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -34,13 +34,13 @@ namespace Invoice
 
         private void DrukujMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Reports reports = new Reports(1, 1);
+            ReportsWindow reports = new ReportsWindow(1, 1);
             reports.ShowDialog();
         }
 
         private void FakturaBtn_Click(object sender, RoutedEventArgs e)
         {
-            Reports reports = new Reports(1, 1);
+            ReportsWindow reports = new ReportsWindow(1, 1);
             reports.ShowDialog();
         }
     }
