@@ -32,7 +32,5 @@
             <TextBox AcceptsReturn="True" />
 
         </StackPanel>
-        
-        <Button x:Name="FakturaBtn" Content="Faktura" HorizontalAlignment="Left" Height="32" Margin="82,42,0,0" VerticalAlignment="Top" Width="72"/>
     </Grid>
 </Window>

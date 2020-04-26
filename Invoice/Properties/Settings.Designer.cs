@@ -22,6 +22,7 @@ namespace Invoice.Properties {
                 return defaultInstance;
             }
         }
+
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

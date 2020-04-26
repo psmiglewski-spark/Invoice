@@ -168,7 +168,9 @@ namespace Invoice
            ,[VAT]
            ,[Issuing_User]
            ,[Currency]
-           ,[Currency_Change_Rate])
+           ,[Currency_Change_Rate],
+           ,[Kwota_Slownie]
+           ,[VAT_Account])
      VALUES
            (@Invoice_Number
            ,@ID_Client
@@ -193,7 +195,9 @@ namespace Invoice
            ,@VAT
            ,@Issuing_User
            ,@Currency
-           ,@Currency_Change_Rate)";
+           ,@Currency_Change_Rate
+           ,@Kwota_Slownie
+           ,@VAT_Account)";
 
                 SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
                 sqlConnection.Open();
@@ -221,6 +225,8 @@ namespace Invoice
                 sqlCommand.Parameters.AddWithValue("@Issuing_User", invoice.Issuing_User);
                 sqlCommand.Parameters.AddWithValue("@Currency", invoice.Currency);
                 sqlCommand.Parameters.AddWithValue("@Currency_Change_Rate", invoice.Currency_Change_Rate);
+                sqlCommand.Parameters.AddWithValue("@Kwota_Slownie", invoice.Kwota_Slownie);
+                sqlCommand.Parameters.AddWithValue("@VAT_Account", invoice.VAT_Account);
                 sqlCommand.ExecuteScalar();
             }
             catch (Exception e)
@@ -405,6 +411,41 @@ namespace Invoice
             string connectionString = properties.GetConnectionString();
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             var salCommand = "Select * from Invoice where invoiceID =  " + invoiceId ;
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+
+                // string addQuery = @"Select Top 1 * from Client";
+
+                //SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                //sqlConnection.Open();
+
+                //  sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+
+        public DataTable SelectAllInvoices()
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select * from Invoice" ;
 
             try
             {

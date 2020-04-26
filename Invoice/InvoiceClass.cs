@@ -9,32 +9,34 @@ namespace Invoice
     class InvoiceClass
     {
         
-        public string Invoice_Number { get; } 
-        public int ID_Client { get; } 
-        public string Client_Name { get; }
-        public string Client_NIP { get; }
-        public string Client_Address_Street { get; }
-        public string Client_Address_Pos_Number { get; }
-        public string Client_Address_Loc_Number { get; }
-        public string Client_Address_Postal_Code { get; }
-        public string Client_Address_City { get; }
-        public string Client_Address_Country { get; }
-        public DateTime Issue_Date { get; }
-        public DateTime Sale_Date { get; }
-        public DateTime Payment_Date { get; }
-        public string Payment_Method { get; }
-        public string Payment_Account { get; }
-        public int SplitPayment { get; }
-        public string Note { get; }
-        public float Net_Value { get; }
-        public float Gross_Value { get; }
-        public float VAT_Value { get; }
-        public int VAT { get; }
-        public string Issuing_User { get; }
-        public string Currency { get; }
-        public float Currency_Change_Rate { get; }
+        public string Invoice_Number { get; set; } 
+        public int ID_Client { get; set; } 
+        public string Client_Name { get; set; }
+        public string Client_NIP { get; set; }
+        public string Client_Address_Street { get; set; }
+        public string Client_Address_Pos_Number { get; set; }
+        public string Client_Address_Loc_Number { get; set; }
+        public string Client_Address_Postal_Code { get; set; }
+        public string Client_Address_City { get; set; }
+        public string Client_Address_Country { get; set; }
+        public DateTime Issue_Date { get; set; }
+        public DateTime Sale_Date { get; set; }
+        public DateTime Payment_Date { get; set; }
+        public string Payment_Method { get; set; }
+        public string Payment_Account { get; set; }
+        public int SplitPayment { get; set; }
+        public string Note { get; set; }
+        public float Net_Value { get; set; }
+        public float Gross_Value { get; set; }
+        public float VAT_Value { get; set; }
+        public int VAT { get; set; }
+        public string Issuing_User { get; set; }
+        public string Currency { get; set; }
+        public float Currency_Change_Rate { get; set; }
+        public string Kwota_Slownie { get; set; }
+        public string VAT_Account { get; set; }
 
-        public InvoiceClass(string invoiceNumber, int idClient, string clientName, string clientNip, string clientAddressStreet, string clientAddressPosNumber, string clientAddressLocNumber, string clientAddressPostalCode, string clientAddressCity, string clientAddressCountry, DateTime issueDate, DateTime saleDate, DateTime paymentDate, string paymentMethod, string paymentAccount, int splitPayment, string note, float netValue, float grossValue, float vatValue, int vat, string issuingUser, string currency, float currencyChangeRate)
+        public InvoiceClass(string invoiceNumber, int idClient, string clientName, string clientNip, string clientAddressStreet, string clientAddressPosNumber, string clientAddressLocNumber, string clientAddressPostalCode, string clientAddressCity, string clientAddressCountry, DateTime issueDate, DateTime saleDate, DateTime paymentDate, string paymentMethod, string paymentAccount, int splitPayment, string note, float netValue, float grossValue, float vatValue, int vat, string issuingUser, string currency, float currencyChangeRate, string kwotaSlownie, string vatAccount)
         {
             this.Invoice_Number = invoiceNumber;
             this.ID_Client = idClient;
@@ -60,6 +62,8 @@ namespace Invoice
             this.Issuing_User = issuingUser;
             this.Currency = currency;
             this.Currency_Change_Rate = currencyChangeRate;
+            this.Kwota_Slownie = kwotaSlownie;
+            this.VAT_Account = vatAccount;
 
 
         }
