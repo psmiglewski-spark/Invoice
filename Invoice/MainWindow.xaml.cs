@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Invoice.Properties;
 using Microsoft.Reporting.WinForms;
 using Label = System.Windows.Controls.Label;
 
@@ -26,7 +27,8 @@ namespace Invoice
     {
         public MainWindow()
         {
-           
+           // Settings.Default.InvoiceConnectionString = "Data Source=ACERLAPTOP\\SPARKDBENGINE;Initial Catalog=Invoice;Persist Security Inf" +
+                                                  //     "o=True;User ID=sa;Password=PIotreck1";
             InitializeComponent();
             //    float kwotaDec = 12453.99f;
             //    int zlote = (int)kwotaDec;
@@ -49,6 +51,7 @@ namespace Invoice
             //    student.MobileNo = dt.Rows[i]["MobileNo"].ToString();
             //    studentList.Add(student);
             //}
+            
 
             var dt = new DataTable();
             var db = new DataBase();

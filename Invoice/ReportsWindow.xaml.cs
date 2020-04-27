@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Invoice.Properties;
 using Microsoft.Reporting.WinForms;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -25,6 +26,7 @@ namespace Invoice
         public ReportsWindow(int issuingId, int invoiceId)
         {
             InitializeComponent();
+            
             // invoiceReport(issuingId,invoiceId);
             invoiceReportStd(issuingId, invoiceId);
         }

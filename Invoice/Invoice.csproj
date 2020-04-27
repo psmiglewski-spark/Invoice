@@ -111,6 +111,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="Extension.cs" />
     <Compile Include="InvoiceClass.cs" />
     <Compile Include="InvoiceDataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
