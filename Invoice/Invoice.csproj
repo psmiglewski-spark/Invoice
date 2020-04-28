@@ -145,6 +145,9 @@
     </Compile>
     <Compile Include="InvoicePosClass.cs" />
     <Compile Include="KwotaSlownie.cs" />
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PrintReports\Invoice\InvoiceDataSet.Designer.cs">
       <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -170,11 +173,17 @@
     </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="StringCrypt.cs" />
+    <Compile Include="Users.cs" />
     <Compile Include="Vat_Table.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Vat_Table.xsd</DependentUpon>
     </Compile>
+    <Page Include="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

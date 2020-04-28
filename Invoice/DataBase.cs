@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,6 @@ namespace Invoice
         // Insert queries
 
         //Adds new client
-        
         public void InsertClient(Client client)
         {
 
@@ -240,7 +240,7 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
-
+        //Adds invoice position
         public void InsertInvoicePos(InvoicePosClass invoicePos)
         {
             string connectionString = properties.GetConnectionString();
@@ -294,11 +294,100 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        //Adds User
+        public void AddUser(string userName, string userSecondName, string userLogin, string password, string userRole)
+        {
+
+            //string passwordEncrypted;
+            //passwordEncrypted = Security.Encrypt(password, key);
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string addQuery = "insert into dbo.Users values (@userName, @userSecondName, @userLogin, @password,@userRole)";
+                SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@userName", userName);
+                sqlCommand.Parameters.AddWithValue("@userSecondName", userSecondName);
+                sqlCommand.Parameters.AddWithValue("@userLogin", userLogin);
+                sqlCommand.Parameters.AddWithValue("@password", password);
+                sqlCommand.Parameters.AddWithValue("@userRole", userRole);
+                
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                //  File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
 
         //Update queries
+        public void UpdateUser(string userLogin, string password, int role)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
 
+                string updateQuery = "update dbo.Users set User_Password = @password, User_Role = @role  where User_Login = @userLogin ";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@userLogin", userLogin);
+                sqlCommand.Parameters.AddWithValue("@role", role);
+                sqlCommand.Parameters.AddWithValue("@password", password);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        
+        
         //Delete queries
+        //Deletes user by userName
+        public void DeleteUser(string userLogin)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
 
+                string deleteQuery = "delete from dbo.Users where User_Login = @userLogin ";
+                SqlCommand sqlCommand = new SqlCommand(deleteQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@userLogin", userLogin);
+                // sqlCommand.Parameters.AddWithValue("@userRole", userRole);
+                // sqlCommand.Parameters.AddWithValue("@password", password);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+      
+        
+        
         //Select queries
         //Return Client table for reporting
         public DataTable SelectClient(int clientId)
@@ -439,7 +528,7 @@ namespace Invoice
 
             return ds;
         }
-
+        //Returns dataset of all invoices
         public DataTable SelectAllInvoices()
         {
             var ds = new DataTable();
@@ -474,5 +563,134 @@ namespace Invoice
 
             return ds;
         }
+        //Returns user ID from user login
+        public int IsLogged(string loginInfo)
+        {
+            int _loginId = -1;
+            string connectionString = properties.GetConnectionString();
+
+            string queryUser = "select top 1 Id from dbo.Users where User_Login = @userLogin";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlDataAdapter userNameAdapter = new SqlDataAdapter(queryUser, sqlConnection);
+            List<DataRow> userList = new List<DataRow>();
+            using (userNameAdapter)
+            {
+                DataTable userData = new DataTable();
+                userNameAdapter.SelectCommand.Parameters.AddWithValue("@userLogin", loginInfo);
+                userNameAdapter.Fill(userData);
+
+                foreach (DataRow dr in userData.Rows)
+                {
+                    userList.Add(dr);
+                }
+            }
+            if (userList.Count() > 0)
+            {
+
+                _loginId = (int)userList[0]["Id"];
+
+            }
+
+            return _loginId;
+        }
+        //Returns user role from user id
+        public int GetUserRoleFromId(char _userId)
+        {
+            string connectionString = properties.GetConnectionString();
+            int _loginId = (int)_userId;
+            int _role = -100;
+
+
+            string queryUser = "select top 1 User_Role from dbo.Users where UserId = @Id";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlDataAdapter userNameAdapter = new SqlDataAdapter(queryUser, sqlConnection);
+            List<DataRow> userList = new List<DataRow>();
+            using (userNameAdapter)
+            {
+                DataTable userData = new DataTable();
+                userNameAdapter.SelectCommand.Parameters.AddWithValue("@Id", _loginId);
+                userNameAdapter.Fill(userData);
+
+                foreach (DataRow dr in userData.Rows)
+                {
+                    userList.Add(dr);
+                }
+            }
+
+            if (userList.Count() > 0)
+            {
+
+                _role = (int)userList[0]["userRole"];
+
+            }
+
+            return _role;
+        }
+        //Returns true if login and password correct, false if not
+        public bool CheckLogin(string user, string pass)
+        {
+            string connectionString = properties.GetConnectionString();
+            var _user = new Users();
+            string _userLogin = _user.getUserLogin();
+            string _userPassword = _user.getUserPassword();
+            int _userRole = _user.getUserRole();
+
+            string queryUser = "select top 1 User_Login, User_Password from dbo.Users where User_Login = @userLogin";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlDataAdapter userNameAdapter = new SqlDataAdapter(queryUser, sqlConnection);
+            List<DataRow> userList = new List<DataRow>();
+
+            // string passwordDecrypted = "";
+
+            using (userNameAdapter)
+            {
+                DataTable userData = new DataTable();
+                userNameAdapter.SelectCommand.Parameters.AddWithValue("@userLogin", user);
+                userNameAdapter.Fill(userData);
+
+                foreach (DataRow dr in userData.Rows)
+                {
+                    userList.Add(dr);
+                }
+            }
+            if (userList.Count() > 0)
+            {
+
+                _userLogin = userList[0]["User_Login"].ToString();
+                _userPassword = userList[0]["User_Password"].ToString();
+               
+            }
+            if ((user == _userLogin) && (pass == _userPassword))
+            {
+                
+
+                string userLoginData = user;
+                try
+                {
+                    using (System.IO.FileStream fs = new System.IO.FileStream(System.IO.Directory.GetCurrentDirectory() + "\\login.tmp", FileMode.Create))
+                    {
+                        using (StreamWriter fw = new StreamWriter(fs))
+                        {
+                            fw.Write(userLoginData, 0, userLoginData.Length);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+
+                return true;
+
+                //addLoginInfo(user, 1, DateTime.Now);
+                //  this.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                return false;
+                //  addLoginInfo(user, 0, DateTime.Now);
+            }
+        }
+
     }
 }

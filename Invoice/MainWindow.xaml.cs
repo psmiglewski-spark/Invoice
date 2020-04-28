@@ -30,6 +30,8 @@ namespace Invoice
            // Settings.Default.InvoiceConnectionString = "Data Source=ACERLAPTOP\\SPARKDBENGINE;Initial Catalog=Invoice;Persist Security Inf" +
                                                   //     "o=True;User ID=sa;Password=PIotreck1";
             InitializeComponent();
+            var loginWindow = new LoginWindow();
+            loginWindow.ShowDialog();
             //    float kwotaDec = 12453.99f;
             //    int zlote = (int)kwotaDec;
             //    int grosze = (int)(100 * kwotaDec) % 100;
