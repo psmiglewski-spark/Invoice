@@ -691,6 +691,71 @@ namespace Invoice
                 //  addLoginInfo(user, 0, DateTime.Now);
             }
         }
+        // Returns filteret list of invoices
+        public DataTable InvoiceListFilter(string _invoiceNumberFilter, DateTime _dateFrom, DateTime _dateTo, string _client )
+        {
+          
+            MessageBox.Show(_dateFrom.ToString());
+
+            var filter = "where Invoice_Number like '%" + _invoiceNumberFilter + "%' and Client_Name like '%" +
+                         _client + "%' and Issue_Date between '" + _dateFrom.ToString("yyyy-MM-dd") + "' and '" + _dateTo.ToString("yyyy-MM-dd") + "'" ;
+            MessageBox.Show(filter);
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+           // var sqlCommand = "Select Invoice_Number as [Numer Faktury], Client_Name as [Firma], Client_Nip as [NIP], Concat(Client_Address_Street,' ',Client_Address_Pos_Number,' ', Client_Address_Loc_Number) as [Adres], Client_Address_Postal_Code as [Kod pocztowy], Client_Address_City as [Miasto], Issue_Date as [Data wystawienia], Payment_Date as [Data płatności], Net_Value as [Wartość Netto], VAT as [VAT], Vat_Value as [Wartość VAT], Gross_Value as [Wartość brutto], Currency as [Waluta], Issuing_User as [Użytkownik] from Invoice " + filter;
+           var sqlCommand = "Select * from Invoice " + filter;
+           try
+            {
+
+                var da = new SqlDataAdapter(sqlCommand, sqlConnection);
+                da.Fill(ds);
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+        // Returns list od invoices
+        public DataTable InvoiceList()
+        {
+            //var filter = "where Invoice_Number like '%" + _invoiceNumberFilter + "%' and Client_Name like '%" + _client + "%' and Issue_Date between" + _dateFrom + "and" + _dateTo;
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            // var sqlCommand = "Select Invoice_Number as [Numer Faktury], Client_Name as [Firma], Client_Nip as [NIP], Concat(Client_Address_Street,' ',Client_Address_Pos_Number,' ', Client_Address_Loc_Number) as [Adres], Client_Address_Postal_Code as [Kod pocztowy], Client_Address_City as [Miasto], Issue_Date as [Data wystawienia], Payment_Date as [Data płatności], Net_Value as [Wartość Netto], VAT as [VAT], Vat_Value as [Wartość VAT], Gross_Value as [Wartość brutto], Currency as [Waluta], Issuing_User as [Użytkownik] from Invoice " + filter;
+            var sqlCommand = "Select * from Invoice";
+            try
+            {
+
+                var da = new SqlDataAdapter(sqlCommand, sqlConnection);
+                da.Fill(ds);
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
 
     }
 }

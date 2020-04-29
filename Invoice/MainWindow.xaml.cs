@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Invoice.Properties;
 using Microsoft.Reporting.WinForms;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using Label = System.Windows.Controls.Label;
 
 namespace Invoice
@@ -27,20 +30,11 @@ namespace Invoice
     {
         public MainWindow()
         {
-           // Settings.Default.InvoiceConnectionString = "Data Source=ACERLAPTOP\\SPARKDBENGINE;Initial Catalog=Invoice;Persist Security Inf" +
-                                                  //     "o=True;User ID=sa;Password=PIotreck1";
+           
             InitializeComponent();
             var loginWindow = new LoginWindow();
             loginWindow.ShowDialog();
-            //    float kwotaDec = 12453.99f;
-            //    int zlote = (int)kwotaDec;
-            //    int grosze = (int)(100 * kwotaDec) % 100;
-            //    MessageBox.Show(String.Format("{0} {1}, {2} {3}",
-            //    KwotaSlownie.LiczbaSlownie(zlote),
-            //    KwotaSlownie.WalutaSlownie(zlote, "PLN"),
-            //    KwotaSlownie.LiczbaSlownie(grosze),
-            //    KwotaSlownie.WalutaSlownie(grosze, ".PLN")));
-            //////osiemset pięćdziesiąt dwa złote, dziewięćdziesiąt cztery grosze
+            
             
             FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;
             //List<Student> studentList = new List<Student>();
@@ -54,58 +48,145 @@ namespace Invoice
             //    studentList.Add(student);
             //}
             
-
             var dt = new DataTable();
             var db = new DataBase();
-            var ListaFaktur = new List<InvoiceClass>();
-
-            dt = db.SelectAllInvoices();
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                var invoice = new InvoiceClass();
-                var label = new Label();
-                invoice.Invoice_Number = dt.Rows[i]["Invoice_Number"].ToString();
-                   // invoice.Invoice_Number = dt.Rows[i]["Invoice_Number"].ToString();
-               // invoice.ID_Client = (int) dt.Rows[i]["ID_Client"];
-               // invoice.Client_Name = dt.Rows[i]["Client_Name"].ToString(); 
-                //dt.Rows[i]["Client_NIP"].ToString(), 
-                //dt.Rows[i]["Client_Address_Street"].ToString(), 
-                //dt.Rows[i]["Client_Address_Pos_Number"].ToString(), 
-                //dt.Rows[i]["Client_Address_Loc_Number"].ToString(), 
-                //dt.Rows[i]["Client_Address_Postal_Code"].ToString(), 
-                //dt.Rows[i]["Client_Address_City"].ToString(), 
-                //dt.Rows[i]["Client_Address_Country"].ToString(), 
-                //(DateTime)dt.Rows[i]["Issue_Date"], 
-                //(DateTime)dt.Rows[i]["Sale_Date"], 
-                //(DateTime)dt.Rows[i]["Payment_Date"], 
-                //dt.Rows[i]["Payment_Method"].ToString(), 
-                //dt.Rows[i]["Payment_Account"].ToString(), 
-                //(int)dt.Rows[i]["SplitPayment"], 
-                //dt.Rows[i]["Note"].ToString(), 
-                //(float)dt.Rows[i]["Net_Value"], 
-                //(float)dt.Rows[i]["Gross_Value"], 
-                //(float)dt.Rows[i]["VAT_Value"], 
-                //(int)dt.Rows[i]["VAT"], 
-                //dt.Rows[i]["Issuing_User"].ToString(), 
-                //dt.Rows[i]["Currency"].ToString(), 
-                //(float)dt.Rows[i]["Currency_Change_Rate"], 
-                //dt.Rows[i]["KwotaSlownie"].ToString(), 
-                //dt.Rows[i]["VAT_Account"].ToString()
-                ListaFaktur.Add(invoice);
-            }
+            filter1Lbl.Content = "Numer faktury";
+            filter2Lbl.Content = "Nazwa klienta";
+            dateFilterLbl.Content = "Data od:";
+            dateLbl2.Content = "do:";
+            dt = db.InvoiceList();
+            dt.DefaultView.AllowNew = false;
+            dt.DefaultView.AllowDelete = false;
+            dt.DefaultView.AllowEdit = false;
+            listDataGrid.DataContext = dt.DefaultView;
+            InvoiceList(dt);
+           
 
             
-            
-
-
         }
 
         private void DrukujMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ReportsWindow reports = new ReportsWindow(1, 1);
+            ReportsWindow reports = new ReportsWindow(1, 2);
             reports.ShowDialog();
         }
 
-       
+        public Canvas InvoiceCanvas(string issueDate, string client, string grossValue, string invoiceNr, string status)
+        {
+            var fv = new Canvas();
+            fv.HorizontalAlignment = HorizontalAlignment.Left;
+            fv.VerticalAlignment = VerticalAlignment.Top;
+            fv.Height = 106;
+            fv.Width = 230;
+            fv.Margin = new Thickness(87, 56, 0, 0);
+            fv.Background = new RadialGradientBrush(Colors.White, Colors.Gray);
+            fv.Effect = new DropShadowEffect();
+            var issueDateLbl = new Label();
+            issueDateLbl.Content = issueDate;
+            issueDateLbl.RenderTransformOrigin = new Point(0.639, -0.096);
+            
+            var clientLbl = new Label();
+            clientLbl.Content = client;
+            clientLbl.RenderTransformOrigin = new Point(-0.408, 0.846);
+            clientLbl.FontSize = 16;
+            clientLbl.Margin = new Thickness(13, 29, 0, 0);
+            var grossLbl = new Label();
+            grossLbl.Content = grossValue;
+            grossLbl.RenderTransformOrigin = new Point(-0.408, 0.846);
+            
+            grossLbl.Margin = new Thickness(0, 67, 0, 0);
+            grossLbl.FontSize = 14;
+            var invoiceNrLbl = new Label();
+            invoiceNrLbl.Content = invoiceNr;
+            invoiceNrLbl.RenderTransformOrigin = new Point(-0.408, 0.846);
+            
+            invoiceNrLbl.Margin = new Thickness(120, 67, 0, 0);
+            invoiceNrLbl.FontSize = 14;
+            var statusLbl = new Label();
+            statusLbl.Content = status;
+            statusLbl.RenderTransformOrigin = new Point(0.639, -0.096);
+            
+            statusLbl.Margin = new Thickness(141, 0, 0, 0);
+            fv.Children.Add(issueDateLbl);
+            fv.Children.Add(clientLbl);
+            fv.Children.Add(grossLbl);
+            fv.Children.Add(invoiceNrLbl);
+            fv.Children.Add(statusLbl);
+
+            return fv;
+        }
+
+        public void InvoiceList(DataTable dt)
+        {
+            List<DataRow> invoiceList = new List<DataRow>();
+            var panel = new WrapPanel();
+            invoiceGrid.Children.Add(panel);
+            try
+            {
+                
+                foreach (DataRow dr in dt.Rows)
+                {
+                    
+                    //invoiceList.Add(dr);
+                    panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                        dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+          
+
+        }
+
+        private void filterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            invoiceGrid.Children.Clear();
+            var dateFrom =  new DateTime();
+            var dateTo = new DateTime();
+            if (dateFromDate.SelectedDate == null)
+            {
+                dateFrom = DateTime.MinValue;
+            }
+            else
+            {
+                dateFrom = (DateTime) dateFromDate.SelectedDate;
+            }
+
+            if (dateToDate.SelectedDate == null)
+            {
+                dateTo = DateTime.MaxValue;
+            }
+            else
+            {
+                dateTo = (DateTime) dateToDate.SelectedDate;
+            }
+            var db = new DataBase();
+            var dt = new DataTable();
+            dt = db.InvoiceListFilter(filter1TxtBox.Text, dateFrom, dateTo,
+                filter2TxtBox.Text);
+            List<DataRow> invoiceList = new List<DataRow>();
+            var panel = new WrapPanel();
+            invoiceGrid.Children.Add(panel);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    //invoiceList.Add(dr);
+                    panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                        dr["Gross_Value"].ToString() + " " + dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
     }
 }
