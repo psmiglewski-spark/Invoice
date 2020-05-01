@@ -112,6 +112,7 @@
     <Compile Include="DataBase.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="InvoiceCanvasClass.cs" />
     <Compile Include="InvoiceClass.cs" />
     <Compile Include="InvoiceDataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -144,6 +145,10 @@
       <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
     </Compile>
     <Compile Include="InvoicePosClass.cs" />
+    <Compile Include="InvoicePossitionViewClass.cs" />
+    <Compile Include="InvoiceView.xaml.cs">
+      <DependentUpon>InvoiceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="KwotaSlownie.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -180,6 +185,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Vat_Table.xsd</DependentUpon>
     </Compile>
+    <Page Include="InvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

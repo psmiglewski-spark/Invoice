@@ -34,19 +34,11 @@ namespace Invoice
             InitializeComponent();
             var loginWindow = new LoginWindow();
             loginWindow.ShowDialog();
-            
+            var client = new Client();
+            client.CheckWl("6972171117","2020-04-30");
             
             FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;
-            //List<Student> studentList = new List<Student>();
-            //for (int i = 0; i < dt.Rows.Count; i++)
-            //{
-            //    Student student = new Student();
-            //    student.StudentId = Convert.ToInt32(dt.Rows[i]["StudentId"]);
-            //    student.StudentName = dt.Rows[i]["StudentName"].ToString();
-            //    student.Address = dt.Rows[i]["Address"].ToString();
-            //    student.MobileNo = dt.Rows[i]["MobileNo"].ToString();
-            //    studentList.Add(student);
-            //}
+            
             
             var dt = new DataTable();
             var db = new DataBase();
@@ -55,10 +47,11 @@ namespace Invoice
             dateFilterLbl.Content = "Data od:";
             dateLbl2.Content = "do:";
             dt = db.InvoiceList();
-            dt.DefaultView.AllowNew = false;
-            dt.DefaultView.AllowDelete = false;
-            dt.DefaultView.AllowEdit = false;
-            listDataGrid.DataContext = dt.DefaultView;
+            //dt.DefaultView.AllowNew = false;
+            //dt.DefaultView.AllowDelete = false;
+            //dt.DefaultView.AllowEdit = false;
+            //listDataGrid.DataContext = dt.DefaultView;
+            
             InvoiceList(dt);
            
 
@@ -71,50 +64,7 @@ namespace Invoice
             reports.ShowDialog();
         }
 
-        public Canvas InvoiceCanvas(string issueDate, string client, string grossValue, string invoiceNr, string status)
-        {
-            var fv = new Canvas();
-            fv.HorizontalAlignment = HorizontalAlignment.Left;
-            fv.VerticalAlignment = VerticalAlignment.Top;
-            fv.Height = 106;
-            fv.Width = 230;
-            fv.Margin = new Thickness(87, 56, 0, 0);
-            fv.Background = new RadialGradientBrush(Colors.White, Colors.Gray);
-            fv.Effect = new DropShadowEffect();
-            var issueDateLbl = new Label();
-            issueDateLbl.Content = issueDate;
-            issueDateLbl.RenderTransformOrigin = new Point(0.639, -0.096);
-            
-            var clientLbl = new Label();
-            clientLbl.Content = client;
-            clientLbl.RenderTransformOrigin = new Point(-0.408, 0.846);
-            clientLbl.FontSize = 16;
-            clientLbl.Margin = new Thickness(13, 29, 0, 0);
-            var grossLbl = new Label();
-            grossLbl.Content = grossValue;
-            grossLbl.RenderTransformOrigin = new Point(-0.408, 0.846);
-            
-            grossLbl.Margin = new Thickness(0, 67, 0, 0);
-            grossLbl.FontSize = 14;
-            var invoiceNrLbl = new Label();
-            invoiceNrLbl.Content = invoiceNr;
-            invoiceNrLbl.RenderTransformOrigin = new Point(-0.408, 0.846);
-            
-            invoiceNrLbl.Margin = new Thickness(120, 67, 0, 0);
-            invoiceNrLbl.FontSize = 14;
-            var statusLbl = new Label();
-            statusLbl.Content = status;
-            statusLbl.RenderTransformOrigin = new Point(0.639, -0.096);
-            
-            statusLbl.Margin = new Thickness(141, 0, 0, 0);
-            fv.Children.Add(issueDateLbl);
-            fv.Children.Add(clientLbl);
-            fv.Children.Add(grossLbl);
-            fv.Children.Add(invoiceNrLbl);
-            fv.Children.Add(statusLbl);
-
-            return fv;
-        }
+        
 
         public void InvoiceList(DataTable dt)
         {
@@ -126,10 +76,12 @@ namespace Invoice
                 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    
+                    int.TryParse(dr["InvoiceID"].ToString(), out var id);
                     //invoiceList.Add(dr);
-                    panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
-                        dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    panel.Children.Add(new InvoiceCanvasClass(id, dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                        dr["Gross_Value"].ToString() + " " + dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
                 }
             }
             catch (Exception e)
@@ -176,9 +128,12 @@ namespace Invoice
 
                 foreach (DataRow dr in dt.Rows)
                 {
+                    int.TryParse(dr["InvoiceID"].ToString(), out var id);
 
                     //invoiceList.Add(dr);
-                    panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() + " " + dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    panel.Children.Add(new InvoiceCanvasClass(id,dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
                         dr["Gross_Value"].ToString() + " " + dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
                 }
             }

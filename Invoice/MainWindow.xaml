@@ -32,9 +32,6 @@
             <TextBox AcceptsReturn="True" />
 
         </StackPanel>
-        <DataGrid x:Name="listDataGrid" HorizontalAlignment="Left" Height="264" VerticalAlignment="Top" Width="325" ItemsSource="{Binding}" FontSize="14" FontFamily="Times New Roman" RenderTransformOrigin="0.512,0.153" Margin="44,479,0,0">
-
-        </DataGrid>
         <ScrollViewer Margin="476,326,52,145">
             <Grid x:Name="invoiceGrid"  HorizontalAlignment="Left"   VerticalAlignment="Top">
 

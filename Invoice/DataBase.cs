@@ -695,11 +695,11 @@ namespace Invoice
         public DataTable InvoiceListFilter(string _invoiceNumberFilter, DateTime _dateFrom, DateTime _dateTo, string _client )
         {
           
-            MessageBox.Show(_dateFrom.ToString());
+            
 
             var filter = "where Invoice_Number like '%" + _invoiceNumberFilter + "%' and Client_Name like '%" +
                          _client + "%' and Issue_Date between '" + _dateFrom.ToString("yyyy-MM-dd") + "' and '" + _dateTo.ToString("yyyy-MM-dd") + "'" ;
-            MessageBox.Show(filter);
+            
             var ds = new DataTable();
             string connectionString = properties.GetConnectionString();
             SqlConnection sqlConnection = new SqlConnection(connectionString);
