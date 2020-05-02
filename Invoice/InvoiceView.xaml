@@ -7,38 +7,43 @@
         mc:Ignorable="d"
         Title="InvoiceView" Height="450" Width="800">
     <Grid>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="190" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="340"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="197" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="340"/>
         <Label x:Name="label" Content="Odbiorca faktury" HorizontalAlignment="Left" Margin="95,10,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="clientNameLbl" Content="Client Name" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="280"/>
-        <Label x:Name="clientAddressLbl" Content="Client Address" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="280" />
-        <Label x:Name="ClientCityLbl" Content="Postal code, City, Country" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="280"/>
-        <Label x:Name="NipLbl" Content="NIP: 6972171117" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="117"/>
-        <Label x:Name="TelephoneLbl" Content="tel. +48668347472" HorizontalAlignment="Left" Margin="132,129,0,0" VerticalAlignment="Top" Width="158"/>
-        <Label x:Name="eMailLbl" Content="e-mail: piotr.smiglewski@interlan.pl" HorizontalAlignment="Left" Height="28" Margin="10,155,0,0" VerticalAlignment="Top" Width="280"/>
-        <Button x:Name="editBtn" Content="Edytuj" HorizontalAlignment="Left" Margin="275,180,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="clientNameTxtBox" BorderThickness="0" Text="Client Name" HorizontalAlignment="Left" Margin="16,41,0,0" VerticalAlignment="Top" Width="328"/>
+        <TextBox x:Name="clientAddressTxtBox" BorderThickness="0" Text="Client Address" HorizontalAlignment="Left" Margin="16,72,0,0" VerticalAlignment="Top" Width="328" />
+        <TextBox x:Name="ClientPostalCodeTxtBox" BorderThickness="0" Text="Postal code" HorizontalAlignment="Left" Margin="16,103,0,0" VerticalAlignment="Top" Width="69"/>
+        <TextBox x:Name="NipTxtBox" Text="NIP: 6972171117" BorderThickness="0" HorizontalAlignment="Left" Margin="16,129,0,0" VerticalAlignment="Top" Width="111"/>
+        <TextBox x:Name="TelephoneTxtBox" Text="tel. +48668347472" BorderThickness="0" HorizontalAlignment="Left" Margin="132,129,0,0" VerticalAlignment="Top" Width="158"/>
+        <TextBox x:Name="EMailTxtBox" Text="e-mail: piotr.smiglewski@interlan.pl" BorderThickness="0" HorizontalAlignment="Left" Height="20" Margin="16,155,0,0" VerticalAlignment="Top" Width="274"/>
+        <TextBox x:Name="ClientCityTxtBox" Text="City" HorizontalAlignment="Left" BorderThickness="0" Margin="90,103,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="ClientCountryTxtBox" Text="City" HorizontalAlignment="Left" BorderThickness="0" Margin="215,103,0,0" VerticalAlignment="Top" Width="129"/>
+        <Button x:Name="saveBtn" Content="Zapisz" HorizontalAlignment="Left" BorderThickness="0" Margin="192,180,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="editBtn" Content="Edytuj" HorizontalAlignment="Left" BorderThickness="0" Margin="272,180,0,0" VerticalAlignment="Top" Width="75"/>
 
         <Grid x:Name="Positions" HorizontalAlignment="Left" Height="78" Margin="10,239,0,0" VerticalAlignment="Top" Width="772">
             <ScrollViewer x:Name="scrollView">
                 <Grid x:Name ="positionsGrid" >
                     <StackPanel x:Name="positionsStack">
-                    
-                    <WrapPanel HorizontalAlignment = "Left" Height="28" VerticalAlignment="Top" Width="755" RenderTransformOrigin="0.525,0.506">
-                        <Label x:Name="lpLbl" Content="Lp." Width="27" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="productNameLbl" Width="127" Content="Nazwa towaru/usługi" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="productCodeLbl" Content="PKWiU" Width="50" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="quantityLbl" Content="Ilość" Width="40" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="unitOfMeasureLbl" Content="j.m." Width="30" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="netValueLbl" Content="Wartość netto" Width="90" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="vatLbl" Content="VAT" Width="35" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="vatValueLbl" Content="Wartość VAT" Width="90" BorderBrush="Black" BorderThickness="1"/>
-                        <Label x:Name="grossValueLbl" Content="Wartość brutto" Width="95" BorderBrush="Black" BorderThickness="1"/>
 
-                    </WrapPanel>
-</StackPanel>
+                        <WrapPanel HorizontalAlignment = "Left" Height="28" VerticalAlignment="Top" Width="755" RenderTransformOrigin="0.525,0.506">
+                            <Label x:Name="lpLbl" Content="Lp." Width="27" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="productNameLbl" Width="127" Content="Nazwa towaru/usługi" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="productCodeLbl" Content="PKWiU" Width="50" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="quantityLbl" Content="Ilość" Width="40" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="unitOfMeasureLbl" Content="j.m." Width="30" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="netValueLbl" Content="Wartość netto" Width="90" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="vatLbl" Content="VAT" Width="35" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="vatValueLbl" Content="Wartość VAT" Width="90" BorderBrush="Black" BorderThickness="1"/>
+                            <Label x:Name="grossValueLbl" Content="Wartość brutto" Width="95" BorderBrush="Black" BorderThickness="1"/>
+
+                        </WrapPanel>
+                    </StackPanel>
                 </Grid>
             </ScrollViewer>
         </Grid>
-        <Grid x:Name ="test" HorizontalAlignment="Left" Height="100" Margin="460,29,0,0" VerticalAlignment="Top" Width="290"/>
+        
+
+
 
     </Grid>
 </Window>

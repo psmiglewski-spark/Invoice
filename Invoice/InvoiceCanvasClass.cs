@@ -20,7 +20,7 @@ namespace Invoice
     class InvoiceCanvasClass : Canvas
     {
         
-        private int _id;
+        private int _id = 0;
 
         public InvoiceCanvasClass(int id, string issueDate, string client, string grossValue, string invoiceNr, string status)
         {
@@ -64,15 +64,18 @@ namespace Invoice
             Children.Add(invoiceNrLbl);
             Children.Add(statusLbl);
             Children.Add(button);
-            button.MouseDoubleClick += Button_MouseDoubleClick;
-
+            if (_id != 0)
+            {
+                button.MouseDoubleClick += Button_MouseDoubleClick;
+            }
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show(this._id.ToString());
             var invoice = new InvoiceView(_id);
+            // MessageBox.Show(this._id.ToString());
             invoice.ShowDialog();
+            _id = 0;
         }
     }
 }

@@ -355,6 +355,40 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+
+        public void UpdateInvoicePos(int invoicePosId, string productName, string productCode, int quantity,
+            string unitOfMeasure, float NetValue, float vatValue, float grossValue, string vat)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "update dbo.Invoice_Pos set Product_Name = @productName, Product_Code = @productCode, Quantity = @quantity, Unit_Of_Measure = @unitOfMeasure, Net_Value = @netValue, VAT_Value = @vatValue, Gross_Value = @grossValue, VAT = @vat  where InvoicePosID = @invoicePosId ";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@productName", productName);
+                sqlCommand.Parameters.AddWithValue("@productCode", productCode);
+                sqlCommand.Parameters.AddWithValue("@quantity", quantity);
+                sqlCommand.Parameters.AddWithValue("@unitOfMeasure", unitOfMeasure);
+                sqlCommand.Parameters.AddWithValue("@netValue", NetValue);
+                sqlCommand.Parameters.AddWithValue("@vatValue", vatValue);
+                sqlCommand.Parameters.AddWithValue("@grossValue", grossValue);
+                sqlCommand.Parameters.AddWithValue("@vat", vat);
+                sqlCommand.Parameters.AddWithValue("@invoicePosId", invoicePosId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
         
         
         //Delete queries
@@ -742,6 +776,40 @@ namespace Invoice
                 da.Fill(ds);
 
 
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+        public DataTable SelectInvoiceAndClient(int invoiceId)
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select * from Invoice i left join Client c on i.ID_Client = ClientId  where invoiceID =  " + invoiceId;
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+
+                // string addQuery = @"Select Top 1 * from Client";
+
+                //SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                //sqlConnection.Open();
+
+                //  sqlCommand.ExecuteScalar();
             }
             catch (Exception e)
             {
