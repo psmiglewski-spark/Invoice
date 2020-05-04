@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Invoice"
         mc:Ignorable="d"
-        Title="InvoiceView" Height="450" Width="800">
+        Title="InvoiceView" Height="607.333" Width="802">
     <Grid>
         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="197" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="340"/>
         <Label x:Name="label" Content="Odbiorca faktury" HorizontalAlignment="Left" Margin="95,10,0,0" VerticalAlignment="Top"/>
@@ -20,28 +20,16 @@
         <Button x:Name="saveBtn" Content="Zapisz" HorizontalAlignment="Left" BorderThickness="0" Margin="192,180,0,0" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="editBtn" Content="Edytuj" HorizontalAlignment="Left" BorderThickness="0" Margin="272,180,0,0" VerticalAlignment="Top" Width="75"/>
 
-        <Grid x:Name="Positions" HorizontalAlignment="Left" Height="78" Margin="10,239,0,0" VerticalAlignment="Top" Width="772">
+        <Grid x:Name="Positions" HorizontalAlignment="Left"  Margin="10,239,0,0" VerticalAlignment="Top">
             <ScrollViewer x:Name="scrollView">
                 <Grid x:Name ="positionsGrid" >
-                    <StackPanel x:Name="positionsStack">
+                    <StackPanel x:Name="positionsStack" >
 
-                        <WrapPanel HorizontalAlignment = "Left" Height="28" VerticalAlignment="Top" Width="755" RenderTransformOrigin="0.525,0.506">
-                            <Label x:Name="lpLbl" Content="Lp." Width="27" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="productNameLbl" Width="127" Content="Nazwa towaru/usługi" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="productCodeLbl" Content="PKWiU" Width="50" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="quantityLbl" Content="Ilość" Width="40" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="unitOfMeasureLbl" Content="j.m." Width="30" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="netValueLbl" Content="Wartość netto" Width="90" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="vatLbl" Content="VAT" Width="35" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="vatValueLbl" Content="Wartość VAT" Width="90" BorderBrush="Black" BorderThickness="1"/>
-                            <Label x:Name="grossValueLbl" Content="Wartość brutto" Width="95" BorderBrush="Black" BorderThickness="1"/>
-
-                        </WrapPanel>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
         </Grid>
-        
+
 
 
 

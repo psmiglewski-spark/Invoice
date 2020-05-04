@@ -75,7 +75,7 @@ namespace Invoice
             var invoice = new InvoiceView(_id);
             // MessageBox.Show(this._id.ToString());
             invoice.ShowDialog();
-            _id = 0;
+           
         }
     }
 }

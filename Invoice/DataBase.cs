@@ -327,8 +327,43 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+       // Adds Invoice position
+        public void InsertInvoicePos(string productName, string productCode, int quantity,
+            string unitOfMeasure, float NetValue, float vatValue, float grossValue, string vat, int idInvoice)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "insert into dbo.Invoice_Pos ([Product_Name], [Product_Code], [Quantity], [Unit_Of_Measure], [Net_Value], [VAT_Value], [Gross_Value], [VAT], [ID_Invoice])  values (@productName, @productCode, @quantity, @unitOfMeasure, @netValue, @vatValue, @grossValue, @vat, @idInvoice)";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection); sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@productName", productName);
+                sqlCommand.Parameters.AddWithValue("@productCode", productCode);
+                sqlCommand.Parameters.AddWithValue("@quantity", quantity);
+                sqlCommand.Parameters.AddWithValue("@unitOfMeasure", unitOfMeasure);
+                sqlCommand.Parameters.AddWithValue("@netValue", NetValue);
+                sqlCommand.Parameters.AddWithValue("@vatValue", vatValue);
+                sqlCommand.Parameters.AddWithValue("@grossValue", grossValue);
+                sqlCommand.Parameters.AddWithValue("@vat", vat);
+                sqlCommand.Parameters.AddWithValue("@idInvoice", idInvoice);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
 
         //Update queries
+        //Updates user
         public void UpdateUser(string userLogin, string password, int role)
         {
             string connectionString = properties.GetConnectionString();
@@ -355,7 +390,7 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
-
+        //Updates Invoice position
         public void UpdateInvoicePos(int invoicePosId, string productName, string productCode, int quantity,
             string unitOfMeasure, float NetValue, float vatValue, float grossValue, string vat)
         {
@@ -419,9 +454,33 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
-      
-        
-        
+        public void DeleteInvoicePos(int invoicePosId)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "Delete from Invoice_Pos where InvoicePosId = " + invoicePosId.ToString();
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@invoicePosId", invoicePosId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
+
+
         //Select queries
         //Return Client table for reporting
         public DataTable SelectClient(int clientId)
