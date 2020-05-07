@@ -424,7 +424,36 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
-        
+
+        public void UpdatePaymentValues(float netValue, float vatValue, int vat, float grossValue, int invoiceId, string kwotaSlownie)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "update dbo.Invoice set Net_Value = @netValue, VAT_Value = @vatValue, Gross_Value = @grossValue, Kwota_Slownie = @kwotaSlownie, VAT = @vat where InvoiceID = @invoiceId ";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@netValue", netValue);
+                sqlCommand.Parameters.AddWithValue("@vatValue", vatValue);
+                sqlCommand.Parameters.AddWithValue("@grossValue", grossValue);
+                sqlCommand.Parameters.AddWithValue("@vat", vat);
+                sqlCommand.Parameters.AddWithValue("@kwotaSlownie", kwotaSlownie);
+                sqlCommand.Parameters.AddWithValue("@invoiceId", invoiceId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
         
         //Delete queries
         //Deletes user by userName
@@ -884,5 +913,74 @@ namespace Invoice
             return ds;
         }
 
+        public DataTable SelectOwnCompany()
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select Top 1 * from Client where Own_Company = 1 ";
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+
+                // string addQuery = @"Select Top 1 * from Client";
+
+                //SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                //sqlConnection.Open();
+
+                //  sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+
+        public DataTable SelectPaymentMethod()
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select * from Dictionary_Payment_Method ";
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+
+                // string addQuery = @"Select Top 1 * from Client";
+
+                //SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                //sqlConnection.Open();
+
+                //  sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
     }
 }

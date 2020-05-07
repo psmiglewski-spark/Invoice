@@ -60,7 +60,7 @@ namespace Invoice
 
         private void DrukujMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ReportsWindow reports = new ReportsWindow(1, 2);
+            ReportsWindow reports = new ReportsWindow(4, 1);
             reports.ShowDialog();
         }
 
@@ -77,11 +77,12 @@ namespace Invoice
                 foreach (DataRow dr in dt.Rows)
                 {
                     int.TryParse(dr["InvoiceID"].ToString(), out var id);
+                    float.TryParse(dr["Gross_Value"].ToString(), out var grossValue);
                     //invoiceList.Add(dr);
                     //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
                     //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
                     panel.Children.Add(new InvoiceCanvasClass(id, dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
-                        dr["Gross_Value"].ToString() + " " + dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                        grossValue.ToString("F") + " " + dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
                 }
             }
             catch (Exception e)

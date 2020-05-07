@@ -38,49 +38,109 @@ namespace Invoice
         {
             this._id = id;
             InitializeComponent();
+           
+            splitPaymentAccountLbl.Visibility = Visibility.Hidden;
+            splitPaymentAccountCBox.Visibility = Visibility.Hidden;
+            splitPaymentCheckBox.Checked += SplitPaymentCheckBox_Checked;
+            splitPaymentCheckBox.Unchecked += SplitPaymentCheckBox_Unchecked;
+            InvoiceClientViewLoad(_id);
+            InvoicePositionViewLoad(_id);
+        }
+
+        private void SplitPaymentCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            splitPaymentAccountLbl.Visibility = Visibility.Hidden;
+            splitPaymentAccountCBox.Visibility = Visibility.Hidden;
+        }
+
+        private void SplitPaymentCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            splitPaymentAccountLbl.Visibility = Visibility.Visible;
+            splitPaymentAccountCBox.Visibility = Visibility.Visible;
+        }
+
+        private void InvoiceClientViewLoad(int id)
+        {
             var db = new DataBase();
-            var dt = db.SelectInvoicePos(id);
             var di = db.SelectInvoiceAndClient(id);
-
-
-
-
-
+            var dc = db.SelectOwnCompany();
+            var dp = db.SelectPaymentMethod();
+            var paymentMethodsList = new List<string>();
+            var accountNumberList = new List<string>();
+            var vatAccountNumberList = new List<string>();
             try
             {
-                foreach (DataRow dr in di.Rows)
+                foreach (DataRow dr in dp.Rows)
                 {
-                    int.TryParse(dr["InvoiceID"].ToString(), out var id_pos);
-                    int index = 1;
-
-
-                   
-                    clientNameTxtBox.Text = dr["Client_Name"].ToString();
-                    clientAddressTxtBox.Text = dr["Client_Address_Street"].ToString() +
-                                               dr["Client_Address_Pos_Number"].ToString() +
-                                               dr["Client_Address_Loc_Number"].ToString();
-                    ClientPostalCodeTxtBox.Text = dr["Client_Address_Postal_Code"].ToString();
-                    ClientCityTxtBox.Text = dr["Client_Address_City"].ToString();
-                    ClientCountryTxtBox.Text = dr["Client_Address_Country"].ToString();
-                    NipTxtBox.Text = dr["NIP"].ToString();
-                    TelephoneTxtBox.Text = dr["Phone_Number"].ToString();
-                    EMailTxtBox.Text = dr["Email"].ToString();
-
-                    index++;
+                    paymentMethodsList.Add(dr["Payment_Method_Name"].ToString());
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                MessageBox.Show(e.ToString());
+               
             }
-
-            InvoicePositionViewLoad(_id);
-
-
+            try
+            {
+                foreach (DataRow dr in dc.Rows)
+                {
+                    accountNumberList.Add(dr["Account_Number"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                
+            }
+            try
+            {
+                foreach (DataRow dr in dc.Rows)
+                {
+                    vatAccountNumberList.Add(dr["Vat_Account"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+            try
+            {
+                var issueDate = new DateTime();
+                var saleDate = new DateTime();
+                var paymentDate = new DateTime();
+                DateTime.TryParse(di.Rows[0]["Issue_Date"].ToString(), out issueDate);
+                DateTime.TryParse(di.Rows[0]["Sale_Date"].ToString(), out saleDate);
+                DateTime.TryParse(di.Rows[0]["Payment_Date"].ToString(), out paymentDate);
+                clientNameTxtBox.Text = di.Rows[0]["Client_Name"].ToString();
+                    clientAddressTxtBox.Text = di.Rows[0]["Client_Address_Street"].ToString() + " " +
+                                               di.Rows[0]["Client_Address_Pos_Number"].ToString() + " " +
+                                               di.Rows[0]["Client_Address_Loc_Number"].ToString();
+                    ClientPostalCodeTxtBox.Text = di.Rows[0]["Client_Address_Postal_Code"].ToString();
+                    ClientCityTxtBox.Text = di.Rows[0]["Client_Address_City"].ToString();
+                    ClientCountryTxtBox.Text = di.Rows[0]["Client_Address_Country"].ToString();
+                    NipTxtBox.Text = di.Rows[0]["NIP"].ToString();
+                    TelephoneTxtBox.Text = di.Rows[0]["Phone_Number"].ToString();
+                    EMailTxtBox.Text = di.Rows[0]["Email"].ToString();
+                    issuingDateDatePick.SelectedDate = issueDate;
+                    sellDateDatePick.SelectedDate = saleDate;
+                    paymentDateDatePick.SelectedDate = paymentDate;
+                    paymentMethodCBox.ItemsSource = paymentMethodsList;
+                    paymentMethodCBox.SelectedItem = di.Rows[0]["Payment_Method"].ToString();
+                    accountNumberCBox.ItemsSource = accountNumberList;
+                    splitPaymentAccountCBox.ItemsSource = vatAccountNumberList;
+                    accountNumberCBox.SelectedItem = di.Rows[0]["Payment_Account"].ToString();
+                    splitPaymentAccountCBox.SelectedItem = di.Rows[0]["Vat_Account"].ToString();
+                    if ((int)di.Rows[0]["SplitPayment"] == 1)
+                    {
+                        splitPaymentCheckBox.IsChecked = true;
+                        
+                    }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
         }
-
-
 
         private void InvoicePositionViewLoad(int id)
         {
@@ -314,6 +374,58 @@ namespace Invoice
             
 
 
+        }
+
+        private void closeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new DataBase();
+            var dt = db.SelectInvoicePos(_id);
+            int index = 1;
+            float sumNetValue = 0;
+            float sumVatValue = 0;
+            float sumGrossValue = 0;
+            int vat = 0;
+
+            try
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    
+                    float.TryParse(dr["VAT_Value"].ToString(), out var vatValue);
+                    float.TryParse(dr["Gross_Value"].ToString(), out var grossValue);
+                    float.TryParse(dr["Net_Value"].ToString(), out var netValue);
+                    int.TryParse(dr["VAT"].ToString(), out var vatResult);
+                    sumNetValue += netValue;
+                    sumVatValue += vatValue;
+                    sumGrossValue += grossValue;
+                    vat = vatResult;
+
+                }
+
+                sumNetValue = (float)Math.Round(sumNetValue, 2);
+                sumVatValue = (float)Math.Round(sumVatValue, 2);
+                sumGrossValue = (float)Math.Round(sumGrossValue, 2);
+                int zlote = (int)Math.Round(sumGrossValue, 2);
+                int grosze = (int)(100 * Math.Round(sumGrossValue, 2)) % 100;
+                string kwotaSlownie = KwotaSlownie.LiczbaSlownie(zlote) +" " + KwotaSlownie.WalutaSlownie(zlote, "PLN") + " " + KwotaSlownie.LiczbaSlownie(grosze) + " " + KwotaSlownie.WalutaSlownie(grosze, ".PLN");
+                db.UpdatePaymentValues((float)Math.Round(sumNetValue, 2), (float)Math.Round(sumVatValue, 2), vat, sumGrossValue = (float)Math.Round(sumGrossValue, 2), _id, kwotaSlownie);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
+            this.Close();
+        }
+
+        private void printBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            ReportsWindow reports = new ReportsWindow(4, _id);
+            reports.ShowDialog();
         }
     }
 }
