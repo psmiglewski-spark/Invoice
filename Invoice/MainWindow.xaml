@@ -23,7 +23,7 @@
             <Menu x:Name ="FakturyMenu">
                 <MenuItem x:Name ="FakturyMenuItem" Header="Faktury">
                     <MenuItem x:Name ="FakturyDrukujMenuItem" Header="_Drukuj" />
-                    <MenuItem x:Name ="FakturyOpenMenuItem" Header="_Open" />
+                    <MenuItem x:Name ="FakturyAddMenuItem" Header="_Dodaj Fakturę" Click="FakturyAddMenuItem_Click" />
                     <MenuItem x:Name ="FakturySaveMenuItem" Header="_Save" />
                     <Separator />
                     <MenuItem Header="_Exit" />

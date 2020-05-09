@@ -95,6 +95,7 @@ namespace Invoice
             Height = 18,
             Background = new SolidColorBrush(Colors.Red)
         };
+       
         public InvoicePossitionViewClass(int isNew, int invoiceId, int id_pos, string lp, string productName,string productCode, string quantity, string unitOfMeasure, string netValue, string vat, string vatValue, string grossValue)
         {
             this._isNew = isNew;
@@ -158,6 +159,7 @@ namespace Invoice
             
 
         }
+      
         private void TxtBox_NetValueTextChanged(object sender, TextChangedEventArgs e)
         {
 

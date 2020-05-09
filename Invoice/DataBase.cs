@@ -137,7 +137,7 @@ namespace Invoice
             }
         }
         /* Adds invoice */
-        public void InsertInvoice(InvoiceClass invoice)
+        public void InsertInvoiceClass(InvoiceClass invoice)
         {
             string connectionString = properties.GetConnectionString();
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -227,6 +227,109 @@ namespace Invoice
                 sqlCommand.Parameters.AddWithValue("@Currency_Change_Rate", invoice.Currency_Change_Rate);
                 sqlCommand.Parameters.AddWithValue("@Kwota_Slownie", invoice.Kwota_Slownie);
                 sqlCommand.Parameters.AddWithValue("@VAT_Account", invoice.VAT_Account);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        public void InsertInvoice(string invoiceNumber, int idClient, string clientName, string clientNip, string clientAddressStreet, string clientAddressPosNumber, string clientAddressLocNumber, string clientAddressPostalCode, string clientAddressCity, string clientAddressCountry, DateTime issueDate, DateTime saleDate, DateTime paymentDate, string paymentMethod, string paymentAccount, int splitPayment, string note, float netValue, float vatValue, int vat, float grossValue, string issuingUser, string currency, float currencyChangeRate, string vatAccount, string kwotaSlownie)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string addQuery = @"INSERT INTO [dbo].[Invoice]
+           ([Invoice_Number]
+           ,[ID_Client]
+           ,[Client_Name]
+           ,[Client_NIP]
+           ,[Client_Address_Street]
+           ,[Client_Address_Pos_Number]
+           ,[Client_Address_Loc_Number]
+           ,[Client_Address_Postal_Code]
+           ,[Client_Address_City]
+           ,[Client_Address_Country]
+           ,[Issue_Date]
+           ,[Sale_Date]
+           ,[Payment_Date]
+           ,[Payment_Method]
+           ,[Payment_Account]
+           ,[SplitPayment]
+           ,[Note]
+           ,[Net_Value]
+           ,[Gross_Value]
+           ,[VAT_Value]
+           ,[VAT]
+           ,[Issuing_User]
+           ,[Currency]
+           ,[Currency_Change_Rate]
+           ,[Kwota_Slownie]
+           ,[VAT_Account])
+     VALUES
+           (@Invoice_Number
+           ,@ID_Client
+           ,@Client_Name
+           ,@Client_NIP
+           ,@Client_Address_Street
+           ,@Client_Address_Pos_Number
+           ,@Client_Address_Loc_Number
+           ,@Client_Address_Postal_Code
+           ,@Client_Address_City
+           ,@Client_Address_Country
+           ,@Issue_Date
+           ,@Sale_Date
+           ,@Payment_Date
+           ,@Payment_Method
+           ,@Payment_Account
+           ,@SplitPayment
+           ,@Note
+           ,@Net_Value
+           ,@Gross_Value
+           ,@VAT_Value
+           ,@VAT
+           ,@Issuing_User
+           ,@Currency
+           ,@Currency_Change_Rate
+           ,@Kwota_Slownie
+           ,@VAT_Account)";
+
+                SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@Invoice_Number", invoiceNumber);
+                sqlCommand.Parameters.AddWithValue("@ID_Client", idClient);
+                sqlCommand.Parameters.AddWithValue("@Client_Name", clientName);
+                sqlCommand.Parameters.AddWithValue("@Client_NIP", clientNip);
+                sqlCommand.Parameters.AddWithValue("@Client_Address_Street", clientAddressStreet);
+                sqlCommand.Parameters.AddWithValue("@Client_Address_Pos_Number", clientAddressPosNumber);
+                sqlCommand.Parameters.AddWithValue("@Client_Address_Loc_Number", clientAddressLocNumber);
+                sqlCommand.Parameters.AddWithValue("@Client_Address_Postal_Code", clientAddressPostalCode);
+                sqlCommand.Parameters.AddWithValue("@Client_Address_City", clientAddressCity);
+                sqlCommand.Parameters.AddWithValue("@Client_Address_Country", clientAddressCountry);
+                sqlCommand.Parameters.AddWithValue("@Issue_Date", issueDate);
+                sqlCommand.Parameters.AddWithValue("@Sale_Date", saleDate);
+                sqlCommand.Parameters.AddWithValue("@SplitPayment", splitPayment);
+                sqlCommand.Parameters.AddWithValue("@Payment_Date", paymentDate);
+                sqlCommand.Parameters.AddWithValue("@Payment_Method", paymentMethod);
+                sqlCommand.Parameters.AddWithValue("@Payment_Account", paymentAccount);
+                sqlCommand.Parameters.AddWithValue("@Note", note);
+                sqlCommand.Parameters.AddWithValue("@Net_Value", netValue);
+                sqlCommand.Parameters.AddWithValue("@Gross_Value", grossValue);
+                sqlCommand.Parameters.AddWithValue("@Vat_Value", vatValue);
+                sqlCommand.Parameters.AddWithValue("@VAT", vat);
+                sqlCommand.Parameters.AddWithValue("@Issuing_User", issuingUser);
+                sqlCommand.Parameters.AddWithValue("@Currency", currency);
+                sqlCommand.Parameters.AddWithValue("@Currency_Change_Rate", currencyChangeRate);
+                sqlCommand.Parameters.AddWithValue("@Kwota_Slownie", kwotaSlownie);
+                sqlCommand.Parameters.AddWithValue("@VAT_Account", vatAccount);
                 sqlCommand.ExecuteScalar();
             }
             catch (Exception e)
@@ -454,7 +557,58 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
-        
+        public void UpdateInvoice(string invoiceNumber, int idClient, string clientName, string clientNip, string clientAddressStreet, string clientAddressPosNumber, string clientAddressLocNumber, string clientAddressPostalCode, string clientAddressCity, string clientAddressCountry, DateTime issueDate, DateTime saleDate, DateTime paymentDate, string paymentMethod, string paymentAccount, int splitPayment, string note,   float netValue, float vatValue, int vat, float grossValue, string issuingUser, string currency, float currencyChangeRate, string vatAccount, int invoiceId, string kwotaSlownie)
+        {
+           
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "update dbo.Invoice set Invoice_number = @invoiceNumber, ID_Client = @idClient, Client_Name = @clientName, Client_NIP = @ClientNip, Client_Address_Street = @clientAddressStreet, Client_Address_Pos_Number = @clientAddressPosNumber, Client_Address_Loc_Number = @clientAddressLocNumber, Client_Address_Postal_Code = @clientAddressPostalCode, Client_Address_City = @clientAddressCity, Client_Address_Country = @clientAddressCountry, Issue_Date = @issueDate, Sale_Date = @saleDate, Payment_Date = @paymentDate, Payment_Method = @paymentMethod, Payment_Account = @paymentAccount, SplitPayment = @splitPayment, Note = @note,  Net_Value = @netValue, VAT_Value = @vatValue, Gross_Value = @grossValue, Kwota_Slownie = @kwotaSlownie, VAT = @vat, Issuing_User = @issuingUser, Currency = @Currency, Currency_Change_Rate = @currencyChangeRate, Vat_Account = @vatAccount where InvoiceID = @invoiceId ";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@invoiceNumber", invoiceNumber);
+                sqlCommand.Parameters.AddWithValue("@idClient", idClient);
+                sqlCommand.Parameters.AddWithValue("@clientName", clientName);
+                sqlCommand.Parameters.AddWithValue("@clientNip", clientNip);
+                sqlCommand.Parameters.AddWithValue("@clientAddressStreet", clientAddressStreet);
+                sqlCommand.Parameters.AddWithValue("@clientAddressPosNumber", clientAddressPosNumber);
+                sqlCommand.Parameters.AddWithValue("@clientAddressLocNumber", clientAddressLocNumber);
+                sqlCommand.Parameters.AddWithValue("@clientAddressPostalCode", clientAddressPostalCode);
+                sqlCommand.Parameters.AddWithValue("@clientAddressCity", clientAddressCity);
+                sqlCommand.Parameters.AddWithValue("@clientAddressCountry", clientAddressCountry);
+                sqlCommand.Parameters.AddWithValue("@issueDate", issueDate);
+                sqlCommand.Parameters.AddWithValue("@saleDate", saleDate);
+                sqlCommand.Parameters.AddWithValue("@paymentDate", paymentDate);
+                sqlCommand.Parameters.AddWithValue("@paymentMethod", paymentMethod);
+                sqlCommand.Parameters.AddWithValue("@paymentAccount", paymentAccount);
+                sqlCommand.Parameters.AddWithValue("@splitPayment", splitPayment);
+                sqlCommand.Parameters.AddWithValue("@note", note);
+                sqlCommand.Parameters.AddWithValue("@netValue", netValue);
+                sqlCommand.Parameters.AddWithValue("@vatValue", vatValue);
+                sqlCommand.Parameters.AddWithValue("@grossValue", grossValue);
+                sqlCommand.Parameters.AddWithValue("@vat", vat);
+                sqlCommand.Parameters.AddWithValue("@issuingUser", issuingUser);
+                sqlCommand.Parameters.AddWithValue("@currency", currency);
+                sqlCommand.Parameters.AddWithValue("@currencyChangeRate", currencyChangeRate);
+                sqlCommand.Parameters.AddWithValue("@vatAccount", vatAccount);
+                sqlCommand.Parameters.AddWithValue("@kwotaSlownie", kwotaSlownie);
+                sqlCommand.Parameters.AddWithValue("@invoiceId", invoiceId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
         //Delete queries
         //Deletes user by userName
         public void DeleteUser(string userLogin)
@@ -494,6 +648,54 @@ namespace Invoice
                 SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
                 sqlConnection.Open();
                 sqlCommand.Parameters.AddWithValue("@invoicePosId", invoicePosId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        public void DeleteInvoice(int invoiceId)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "Delete from Invoice where InvoiceId = " + invoiceId;
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@invoiceId", invoiceId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        public void DeleteInvoiceNumber(string invNumber)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "Delete from Invoice where Invoice_Number = '" + invNumber + "'";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+               // sqlCommand.Parameters.AddWithValue("@invoice_Number", invNumber);
                 sqlCommand.ExecuteScalar();
             }
             catch (Exception e)
@@ -621,7 +823,7 @@ namespace Invoice
             var ds = new DataTable();
             string connectionString = properties.GetConnectionString();
             SqlConnection sqlConnection = new SqlConnection(connectionString);
-            var salCommand = "Select * from Invoice where invoiceID =  " + invoiceId ;
+            var salCommand = "Select * from Invoice where invoiceID =  '" + invoiceId + "'" ;
 
             try
             {
@@ -650,6 +852,41 @@ namespace Invoice
 
             return ds;
         }
+        public DataTable SelectInvoiceId(string invoiceNumber)
+        {
+            var di = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select * from Invoice where Invoice_Number =  '" + invoiceNumber + "'";
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(di);
+
+
+                // string addQuery = @"Select Top 1 * from Client";
+
+                //SqlCommand sqlCommand = new SqlCommand(addQuery, sqlConnection);
+                //sqlConnection.Open();
+
+                //  sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return di;
+        }
+
         //Returns dataset of all invoices
         public DataTable SelectAllInvoices()
         {

@@ -144,5 +144,28 @@ namespace Invoice
                 throw;
             }
         }
+
+        private void FakturyAddMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new DataBase();
+            db.InsertInvoice("new", 0, " ", " ", " ", " ", " ", " ", " ", " ", DateTime.Today, DateTime.Today, DateTime.Today, " ", " ", 1, " ", 0f, 0f, 0, 0f, " ", " ", 1f, " ", " ");
+            try
+            {
+                var did = db.SelectInvoiceId("new");
+                int.TryParse(did.Rows[0]["InvoiceID"].ToString(), out var invoiceIdResult);
+                int _id = invoiceIdResult;
+                var invoice = new InvoiceView(_id);
+                invoice.ShowDialog();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                
+            }
+           
+            
+            // MessageBox.Show(this._id.ToString());
+            
+        }
     }
 }

@@ -8,10 +8,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Button = System.Windows.Controls.Button;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using Label = System.Windows.Controls.Label;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Invoice
 {
@@ -112,16 +117,20 @@ namespace Invoice
                 DateTime.TryParse(di.Rows[0]["Sale_Date"].ToString(), out saleDate);
                 DateTime.TryParse(di.Rows[0]["Payment_Date"].ToString(), out paymentDate);
                 clientNameTxtBox.Text = di.Rows[0]["Client_Name"].ToString();
-                    clientAddressTxtBox.Text = di.Rows[0]["Client_Address_Street"].ToString() + " " +
-                                               di.Rows[0]["Client_Address_Pos_Number"].ToString() + " " +
-                                               di.Rows[0]["Client_Address_Loc_Number"].ToString();
+                clientAddressTxtBox.Text = di.Rows[0]["Client_Address_Street"].ToString();
+                clientAddressPosNumberTxtBox.Text = di.Rows[0]["Client_Address_Pos_Number"].ToString();
+                clientAddressLocNumberTxtBox.Text = di.Rows[0]["Client_Address_Loc_Number"].ToString();
                     ClientPostalCodeTxtBox.Text = di.Rows[0]["Client_Address_Postal_Code"].ToString();
                     ClientCityTxtBox.Text = di.Rows[0]["Client_Address_City"].ToString();
                     ClientCountryTxtBox.Text = di.Rows[0]["Client_Address_Country"].ToString();
                     NipTxtBox.Text = di.Rows[0]["NIP"].ToString();
                     TelephoneTxtBox.Text = di.Rows[0]["Phone_Number"].ToString();
                     EMailTxtBox.Text = di.Rows[0]["Email"].ToString();
-                    issuingDateDatePick.SelectedDate = issueDate;
+                    invoiceNumberTxtBox.Text = di.Rows[0]["Invoice_Number"].ToString();
+                    clientIdTxtBox.Text = di.Rows[0]["ID_Client"].ToString();
+                    noteTxtBox.Text = di.Rows[0]["Note"].ToString();
+                    issuingUserNameLbl.Content = di.Rows[0]["Issuing_User"].ToString();
+                issuingDateDatePick.SelectedDate = issueDate;
                     sellDateDatePick.SelectedDate = saleDate;
                     paymentDateDatePick.SelectedDate = paymentDate;
                     paymentMethodCBox.ItemsSource = paymentMethodsList;
@@ -247,37 +256,40 @@ namespace Invoice
 
             positionsStack.Children.Add(panel);
 
-           
-
-            try
+            if (_id != -1)
             {
-                foreach (DataRow dr in dt.Rows)
+                try
                 {
+                    foreach (DataRow dr in dt.Rows)
+                    {
 
-                    int.TryParse(dr["InvoicePosID"].ToString(), out var id_pos);
-                    float.TryParse(dr["VAT_Value"].ToString(), out var vatValue);
-                    float.TryParse(dr["Gross_Value"].ToString(), out var grossValue);
-                    float.TryParse(dr["Net_Value"].ToString(), out var netValue);
-                    sumNetValue += netValue;
-                    sumVatValue += vatValue;
-                    sumGrossValue += grossValue;
+                        int.TryParse(dr["InvoicePosID"].ToString(), out var id_pos);
+                        float.TryParse(dr["VAT_Value"].ToString(), out var vatValue);
+                        float.TryParse(dr["Gross_Value"].ToString(), out var grossValue);
+                        float.TryParse(dr["Net_Value"].ToString(), out var netValue);
+                        sumNetValue += netValue;
+                        sumVatValue += vatValue;
+                        sumGrossValue += grossValue;
 
 
-                    positionsStack.Children.Add(new InvoicePossitionViewClass(0, _id, id_pos, index++.ToString(),
-                        dr["Product_Name"].ToString(), dr["Product_Code"].ToString(),
-                        dr["Quantity"].ToString(), dr["Unit_Of_Measure"].ToString(), dr["Net_Value"].ToString(),
-                        dr["VAT"].ToString(), vatValue.ToString("F"), grossValue.ToString("F")));
+                        positionsStack.Children.Add(new InvoicePossitionViewClass(0, _id, id_pos, index++.ToString(),
+                            dr["Product_Name"].ToString(), dr["Product_Code"].ToString(),
+                            dr["Quantity"].ToString(), dr["Unit_Of_Measure"].ToString(), dr["Net_Value"].ToString(),
+                            dr["VAT"].ToString(), vatValue.ToString("F"), grossValue.ToString("F")));
+
+                    }
+
+
 
                 }
-
-
-
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+           
+          
 
            
 
@@ -366,13 +378,75 @@ namespace Invoice
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int id_pos = 0;
-            positionsStack.Children.Remove(sumPanel);
-            positionsStack.Children.Add(new InvoicePossitionViewClass(1, _id, id_pos, "", "", "",
-                "", "", "", "", "", ""));
-            positionsStack.Children.Add(sumPanel);
-            
+            var db = new DataBase();
+            var dt = db.SelectInvoicePos(_id);
+            int index = 1;
+            float sumNetValue = 0;
+            float sumVatValue = 0;
+            float sumGrossValue = 0;
+            int vat = 0;
+            try
+            {
+                if (_id != -1)
+                {
+                    int id_pos = 0;
+                    positionsStack.Children.Remove(sumPanel);
+                    positionsStack.Children.Add(new InvoicePossitionViewClass(1, _id, id_pos, "", "", "",
+                        "", "", "", "", "", ""));
+                    positionsStack.Children.Add(sumPanel);
+                }
+                else
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
 
+
+                        float.TryParse(dr["VAT_Value"].ToString(), out var vatValue);
+                        float.TryParse(dr["Gross_Value"].ToString(), out var grossValue);
+                        float.TryParse(dr["Net_Value"].ToString(), out var netValue);
+                        int.TryParse(dr["VAT"].ToString(), out var vatResult);
+                        sumNetValue += netValue;
+                        sumVatValue += vatValue;
+                        sumGrossValue += grossValue;
+                        vat = vatResult;
+
+                    }
+                    sumNetValue = (float)Math.Round(sumNetValue, 2);
+                    sumVatValue = (float)Math.Round(sumVatValue, 2);
+                    sumGrossValue = (float)Math.Round(sumGrossValue, 2);
+                    int zlote = (int)Math.Round(sumGrossValue, 2);
+                    int grosze = (int)(100 * Math.Round(sumGrossValue, 2)) % 100;
+                    string kwotaSlownie = KwotaSlownie.LiczbaSlownie(zlote) + " " + KwotaSlownie.WalutaSlownie(zlote, "PLN") + " " + KwotaSlownie.LiczbaSlownie(grosze) + " " + KwotaSlownie.WalutaSlownie(grosze, ".PLN");
+
+                    int splitPayment;
+                    int.TryParse(clientIdTxtBox.Text, out var clientIdResult);
+                    DateTime.TryParse(issuingDateDatePick.SelectedDate.ToString(), out var issuedateResult);
+                    DateTime.TryParse(sellDateDatePick.SelectedDate.ToString(), out var saledateResult);
+                    DateTime.TryParse(paymentDateDatePick.SelectedDate.ToString(), out var paymentdateResult);
+                    bool splitPaymentCheck = Convert.ToBoolean(splitPaymentCheckBox.IsChecked);
+                    splitPayment = splitPaymentCheck ? 1 : 0;
+                    db.InsertInvoice(invoiceNumberTxtBox.Text, clientIdResult, clientNameTxtBox.Text, NipTxtBox.Text,
+                        clientAddressTxtBox.Text, clientAddressPosNumberTxtBox.Text, clientAddressLocNumberTxtBox.Text,
+                        ClientPostalCodeTxtBox.Text, ClientCityTxtBox.Text, ClientCountryTxtBox.Text, issuedateResult,
+                        saledateResult, paymentdateResult, paymentMethodCBox.Text, accountNumberCBox.Text, splitPayment,
+                        noteTxtBox.Text, sumNetValue, sumVatValue, vat, sumGrossValue,
+                        issuingUserNameLbl.Content.ToString(), currencyCBox.Text, 1f, splitPaymentAccountCBox.Text,
+                        kwotaSlownie);
+                    var did = db.SelectInvoiceId(invoiceNumberTxtBox.Text);
+                    int.TryParse(did.Rows[0]["InvoiceID"].ToString(), out var invoiceIdResult);
+                    _id = invoiceIdResult;
+                    int id_pos = 0;
+                    positionsStack.Children.Remove(sumPanel);
+                    positionsStack.Children.Add(new InvoicePossitionViewClass(1, _id, id_pos, "", "", "",
+                        "", "", "", "", "", ""));
+                    positionsStack.Children.Add(sumPanel);
+
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Błąd");
+            }
 
         }
 
@@ -409,7 +483,11 @@ namespace Invoice
                 int zlote = (int)Math.Round(sumGrossValue, 2);
                 int grosze = (int)(100 * Math.Round(sumGrossValue, 2)) % 100;
                 string kwotaSlownie = KwotaSlownie.LiczbaSlownie(zlote) +" " + KwotaSlownie.WalutaSlownie(zlote, "PLN") + " " + KwotaSlownie.LiczbaSlownie(grosze) + " " + KwotaSlownie.WalutaSlownie(grosze, ".PLN");
-                db.UpdatePaymentValues((float)Math.Round(sumNetValue, 2), (float)Math.Round(sumVatValue, 2), vat, sumGrossValue = (float)Math.Round(sumGrossValue, 2), _id, kwotaSlownie);
+                if (_id != -1)
+                { 
+                    db.UpdatePaymentValues((float)Math.Round(sumNetValue, 2), (float)Math.Round(sumVatValue, 2), vat, sumGrossValue = (float)Math.Round(sumGrossValue, 2), _id, kwotaSlownie);
+                }
+                
 
             }
             catch (Exception ex)
@@ -417,7 +495,7 @@ namespace Invoice
                 Console.WriteLine(ex);
                 throw;
             }
-
+            db.DeleteInvoiceNumber("new");
             this.Close();
         }
 
@@ -426,6 +504,86 @@ namespace Invoice
 
             ReportsWindow reports = new ReportsWindow(4, _id);
             reports.ShowDialog();
+        }
+
+        private void saveInvoiceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new DataBase();
+            var dt = db.SelectInvoicePos(_id);
+            int index = 1;
+            float sumNetValue = 0;
+            float sumVatValue = 0;
+            float sumGrossValue = 0;
+            int vat = 0;
+
+            try
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+
+
+                    float.TryParse(dr["VAT_Value"].ToString(), out var vatValue);
+                    float.TryParse(dr["Gross_Value"].ToString(), out var grossValue);
+                    float.TryParse(dr["Net_Value"].ToString(), out var netValue);
+                    int.TryParse(dr["VAT"].ToString(), out var vatResult);
+                    sumNetValue += netValue;
+                    sumVatValue += vatValue;
+                    sumGrossValue += grossValue;
+                    vat = vatResult;
+
+                }
+
+                sumNetValue = (float)Math.Round(sumNetValue, 2);
+                sumVatValue = (float)Math.Round(sumVatValue, 2);
+                sumGrossValue = (float)Math.Round(sumGrossValue, 2);
+                int zlote = (int)Math.Round(sumGrossValue, 2);
+                int grosze = (int)(100 * Math.Round(sumGrossValue, 2)) % 100;
+                string kwotaSlownie = KwotaSlownie.LiczbaSlownie(zlote) + " " + KwotaSlownie.WalutaSlownie(zlote, "PLN") + " " + KwotaSlownie.LiczbaSlownie(grosze) + " " + KwotaSlownie.WalutaSlownie(grosze, ".PLN");
+                
+                    int splitPayment;
+                    int.TryParse(clientIdTxtBox.Text, out var clientIdResult);
+                    DateTime.TryParse(issuingDateDatePick.SelectedDate.ToString(), out var issuedateResult);
+                    DateTime.TryParse(sellDateDatePick.SelectedDate.ToString(), out var saledateResult);
+                    DateTime.TryParse(paymentDateDatePick.SelectedDate.ToString(), out var paymentdateResult);
+                    bool splitPaymentCheck = Convert.ToBoolean(splitPaymentCheckBox.IsChecked);
+                    splitPayment = splitPaymentCheck ? 1 : 0;
+                    db.UpdateInvoice(invoiceNumberTxtBox.Text, clientIdResult, clientNameTxtBox.Text, NipTxtBox.Text, clientAddressTxtBox.Text, clientAddressPosNumberTxtBox.Text, clientAddressLocNumberTxtBox.Text, ClientPostalCodeTxtBox.Text, ClientCityTxtBox.Text, ClientCountryTxtBox.Text, issuedateResult, saledateResult, paymentdateResult, paymentMethodCBox.Text, accountNumberCBox.Text, splitPayment, noteTxtBox.Text, sumNetValue, sumVatValue, vat, sumGrossValue, issuingUserNameLbl.Content.ToString(), currencyCBox.Text, 1f, splitPaymentAccountCBox.Text, _id, kwotaSlownie);
+               
+                //else
+                //{
+                //    int splitPayment;
+                //    int.TryParse(clientIdTxtBox.Text, out var clientIdResult);
+                //    DateTime.TryParse(issuingDateDatePick.SelectedDate.ToString(), out var issuedateResult);
+                //    MessageBox.Show(issuingDateDatePick.SelectedDate.ToString());
+                //    DateTime.TryParse(sellDateDatePick.SelectedDate.ToString(), out var saledateResult);
+                //    DateTime.TryParse(paymentDateDatePick.SelectedDate.ToString(), out var paymentdateResult);
+                //    bool splitPaymentCheck = Convert.ToBoolean(splitPaymentCheckBox.IsChecked);
+                //    splitPayment = splitPaymentCheck ? 1 : 0;
+                //    db.InsertInvoice(invoiceNumberTxtBox.Text, clientIdResult, clientNameTxtBox.Text, NipTxtBox.Text, clientAddressTxtBox.Text, clientAddressPosNumberTxtBox.Text, clientAddressLocNumberTxtBox.Text, ClientPostalCodeTxtBox.Text, ClientCityTxtBox.Text, ClientCountryTxtBox.Text, issuedateResult, saledateResult, paymentdateResult, paymentMethodCBox.Text, accountNumberCBox.Text, splitPayment, noteTxtBox.Text, sumNetValue, sumVatValue, vat, sumGrossValue, issuingUserNameLbl.Content.ToString(), currencyCBox.Text, 1f, splitPaymentAccountCBox.Text, kwotaSlownie);
+                //    var did = db.SelectInvoiceId(invoiceNumberTxtBox.Text);
+                //    int.TryParse(did.Rows[0]["InvoiceID"].ToString(), out var invoiceIdResult);
+                //    _id = invoiceIdResult;
+                //}
+
+              
+
+                MessageBox.Show("Faktura zapisana");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
+            
+        }
+
+        private void deleteInvoiceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new DataBase();
+            db.DeleteInvoice(_id);
+            db.DeleteInvoiceNumber("new");
+            this.Close();
         }
     }
 }
