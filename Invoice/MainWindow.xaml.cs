@@ -20,6 +20,7 @@ using Invoice.Properties;
 using Microsoft.Reporting.WinForms;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using Label = System.Windows.Controls.Label;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Invoice
 {
@@ -35,7 +36,7 @@ namespace Invoice
             var loginWindow = new LoginWindow();
             loginWindow.ShowDialog();
             var client = new Client();
-            client.CheckWl("6972171117","2020-04-30");
+           // client.CheckWl("6972171117","2020-04-30");
             
             FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;
             
@@ -47,15 +48,23 @@ namespace Invoice
             dateFilterLbl.Content = "Data od:";
             dateLbl2.Content = "do:";
             dt = db.InvoiceList();
+           
             //dt.DefaultView.AllowNew = false;
             //dt.DefaultView.AllowDelete = false;
             //dt.DefaultView.AllowEdit = false;
             //listDataGrid.DataContext = dt.DefaultView;
-            
+            this.GotFocus += MainWindow_GotFocus;
             InvoiceList(dt);
            
 
             
+        }
+
+        private void MainWindow_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var db = new DataBase();
+            var dt = db.InvoiceList();
+            InvoiceList(dt);
         }
 
         private void DrukujMenuItem_Click(object sender, RoutedEventArgs e)
@@ -70,6 +79,7 @@ namespace Invoice
         {
             List<DataRow> invoiceList = new List<DataRow>();
             var panel = new WrapPanel();
+            invoiceGrid.Children.Clear();
             invoiceGrid.Children.Add(panel);
             try
             {

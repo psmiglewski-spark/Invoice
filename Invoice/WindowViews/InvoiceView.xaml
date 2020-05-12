@@ -31,23 +31,35 @@
             <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="197" VerticalAlignment="Top" Width="429">
                 <TabItem x:Name ="paymentTab"  Header="Data i forma zapłaty">
                     <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="151*"/>
+                            <ColumnDefinition Width="272*"/>
+                        </Grid.ColumnDefinitions>
                         <Label x:Name="issuingDateLbl" Content="Data wystawienia:" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="82" FontSize="9" Margin="10,0,0,0"/>
                         <DatePicker x:Name ="issuingDateDatePick" HorizontalAlignment="Left" Margin="0,18,0,0" VerticalAlignment="Top" Width="121" FontSize="11"/>
-                        <Label x:Name="sellDateLbl" Content="Data sprzedaży:" HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Top" FontSize="9"/>
-                        <DatePicker x:Name ="sellDateDatePick"  HorizontalAlignment="Left" Margin="133,18,0,0" VerticalAlignment="Top" Width="121" FontSize="11"/>
-                        <Label x:Name="paymentDateLbl" Content="Data płatności:" HorizontalAlignment="Left" Margin="283,0,0,0" VerticalAlignment="Top" FontSize="9"/>
-                        <DatePicker x:Name ="paymentDateDatePick"  HorizontalAlignment="Left" Margin="266,18,0,0" VerticalAlignment="Top" Width="121"/>
-                        <ComboBox x:Name="paymentMethodCBox"  HorizontalAlignment="Left" Margin="75,52,0,0" VerticalAlignment="Top" Width="120"/>
+                        <Label x:Name="sellDateLbl" Content="Data sprzedaży:" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Top" FontSize="9" Grid.Column="1"/>
+                        <DatePicker x:Name ="sellDateDatePick"  HorizontalAlignment="Left" Margin="133,18,0,0" VerticalAlignment="Top" Width="121" FontSize="11" Grid.ColumnSpan="2"/>
+                        <Label x:Name="paymentDateLbl" Content="Data płatności:" HorizontalAlignment="Left" Margin="132,0,0,0" VerticalAlignment="Top" FontSize="9" Grid.Column="1"/>
+                        <DatePicker x:Name ="paymentDateDatePick"  HorizontalAlignment="Left" Margin="115,18,0,0" VerticalAlignment="Top" Width="121" Grid.Column="1"/>
+                        <ComboBox x:Name="paymentMethodCBox"  HorizontalAlignment="Left" Margin="75,52,0,0" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2"/>
                         <Label x:Name="paymentMethodLbl" Content="Forma płatności:" HorizontalAlignment="Left" Margin="0,52,0,0" VerticalAlignment="Top" FontSize="9"/>
                         <CheckBox x:Name="splitPaymentCheckBox" Content="Split Payment" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="98"/>
-                        <ComboBox x:Name="accountNumberCBox" HorizontalAlignment="Left" Margin="70,100,0,0" VerticalAlignment="Top" Width="240"/>
+                        <ComboBox x:Name="accountNumberCBox" HorizontalAlignment="Left" Margin="70,100,0,0" VerticalAlignment="Top" Width="240" Grid.ColumnSpan="2"/>
                         <Label x:Name="accountNumberLbl" Content="Numer Konta:" HorizontalAlignment="Left" Margin="0,99,0,0" VerticalAlignment="Top" FontSize="9"/>
-                        <ComboBox x:Name="splitPaymentAccountCBox" HorizontalAlignment="Left" Margin="70,132,0,0" VerticalAlignment="Top" Width="240"/>
+                        <ComboBox x:Name="splitPaymentAccountCBox" HorizontalAlignment="Left" Margin="70,132,0,0" VerticalAlignment="Top" Width="240" Grid.ColumnSpan="2"/>
                         <Label x:Name="splitPaymentAccountLbl" Content="Konto VAT:" HorizontalAlignment="Left" Margin="0,132,0,0" VerticalAlignment="Top" FontSize="9"/>
-                        <Label x:Name="paymentStatusLbl" Content="Satus płatności" HorizontalAlignment="Left" Margin="335,91,0,0" VerticalAlignment="Top" FontSize="9"/>
-                        <Button x:Name="paymentStatusBtn" Content="Nie zapłacona" Background="Red" HorizontalAlignment="Left" Height="22" Margin="335,118,0,0" VerticalAlignment="Top" Width="70" FontSize="10"/>
-                        <Label x:Name="currencyLbl" Content="Waluta faktury:" HorizontalAlignment="Left" Margin="240,50,0,0" VerticalAlignment="Top" FontSize="11"/>
-                        <ComboBox x:Name="currencyCBox" HorizontalAlignment="Left" Margin="327,53,0,0" VerticalAlignment="Top" Width="59"/>
+                        <Label x:Name="paymentStatusLbl" Content="Satus płatności" HorizontalAlignment="Left" Margin="184,91,0,0" VerticalAlignment="Top" FontSize="9" Grid.Column="1"/>
+                        <Button x:Name="paymentStatusBtn" Content="Częściowo zapłacona" Background="Red" HorizontalAlignment="Left" Height="22" Margin="184,113,0,0" VerticalAlignment="Top" Width="78" FontSize="8" Grid.Column="1"/>
+                        <Label x:Name="currencyLbl" Content="Waluta faktury:" HorizontalAlignment="Left" Margin="89,50,0,0" VerticalAlignment="Top" FontSize="11" Grid.Column="1"/>
+                        <ComboBox x:Name="currencyCBox" HorizontalAlignment="Left" Margin="176,53,0,0" VerticalAlignment="Top" Width="59" Grid.Column="1"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name ="paymentValueTab" Header="Płatności">
+                    <Grid x:Name="paymentValueGrid" Background="#FFE5E5E5">
+                    <StackPanel x:Name="paymentValueStack">
+
+                    </StackPanel>    
+                        
                     </Grid>
                 </TabItem>
                 <TabItem x:Name ="optionsTab" Header="Pozostałe">

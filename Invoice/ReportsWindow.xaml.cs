@@ -28,7 +28,7 @@ namespace Invoice
             InitializeComponent();
             
             // invoiceReport(issuingId,invoiceId);
-            invoiceReportStd(issuingId, invoiceId);
+            InvoiceReportStd(issuingId, invoiceId);
         }
 
         //public void invoiceReport(int issuingId, int invoiceId)
@@ -66,7 +66,7 @@ namespace Invoice
         //}
         
         //Generates invoice_report_std
-        public void invoiceReportStd(int issuingClientId, int invoiceId)
+        public void InvoiceReportStd(int issuingClientId, int invoiceId)
         {
 
             var data = new DataBase();

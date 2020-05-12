@@ -64,6 +64,31 @@ namespace Invoice
             Children.Add(invoiceNrLbl);
             Children.Add(statusLbl);
             Children.Add(button);
+            var paymentStatus = CheckPayment(id);
+            switch (paymentStatus)
+            {
+                case 0:
+                {
+                    Background = new RadialGradientBrush(Colors.White, Colors.Red);
+                    break;
+                }
+                case 1:
+                {
+                    Background = new RadialGradientBrush(Colors.White, Colors.Yellow);
+                    break;
+                }
+                case 2:
+                {
+                    Background = new RadialGradientBrush(Colors.White, Colors.GreenYellow);
+                    break;
+                }
+                case 3:
+                {
+                    Background = new RadialGradientBrush(Colors.White, Colors.DeepPink);
+                    break;
+                }
+            }
+
             if (_id != 0)
             {
                 button.MouseDoubleClick += Button_MouseDoubleClick;
@@ -76,6 +101,33 @@ namespace Invoice
             // MessageBox.Show(this._id.ToString());
             invoice.ShowDialog();
            
+        }
+
+        private int CheckPayment(int id)
+        {
+            var db = new DataBase();
+            float paymentAmount = db.GetPaymentAmount(id);
+            var di = db.SelectInvoice(id);
+            float.TryParse(di.Rows[0]["Gross_Value"].ToString(), out var invoiceGrossValue);
+            
+
+            if (paymentAmount == 0)
+            {
+                return 0;
+            }
+            else if (paymentAmount < invoiceGrossValue)
+            {
+                return 1;
+            }
+            else if (paymentAmount == invoiceGrossValue)
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+                
         }
     }
 }

@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="InvoicePosClass.cs" />
     <Compile Include="InvoicePossitionViewClass.cs" />
+    <Compile Include="PaymentValue.cs" />
     <Compile Include="WindowViews\InvoiceView.xaml.cs">
       <DependentUpon>InvoiceView.xaml</DependentUpon>
     </Compile>

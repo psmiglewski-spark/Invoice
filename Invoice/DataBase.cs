@@ -527,7 +527,7 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
-
+        //Updates invoice payment values from positions
         public void UpdatePaymentValues(float netValue, float vatValue, int vat, float grossValue, int invoiceId, string kwotaSlownie)
         {
             string connectionString = properties.GetConnectionString();
@@ -557,6 +557,7 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        //Updates invoice, all parameters
         public void UpdateInvoice(string invoiceNumber, int idClient, string clientName, string clientNip, string clientAddressStreet, string clientAddressPosNumber, string clientAddressLocNumber, string clientAddressPostalCode, string clientAddressCity, string clientAddressCountry, DateTime issueDate, DateTime saleDate, DateTime paymentDate, string paymentMethod, string paymentAccount, int splitPayment, string note,   float netValue, float vatValue, int vat, float grossValue, string issuingUser, string currency, float currencyChangeRate, string vatAccount, int invoiceId, string kwotaSlownie)
         {
            
@@ -637,6 +638,7 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        //deletes invoice position
         public void DeleteInvoicePos(int invoicePosId)
         {
             string connectionString = properties.GetConnectionString();
@@ -661,6 +663,32 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        // Deletes all invoice positions from invoice
+        public void DeleteAllInvoicePos(int invoiceId)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "Delete from Invoice_Pos where ID_Invoice = " + invoiceId;
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@invoicePosId", invoiceId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        //Deletes invoice by id
         public void DeleteInvoice(int invoiceId)
         {
             string connectionString = properties.GetConnectionString();
@@ -685,6 +713,7 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        // Deletes invoice by invoice number
         public void DeleteInvoiceNumber(string invNumber)
         {
             string connectionString = properties.GetConnectionString();
@@ -852,6 +881,7 @@ namespace Invoice
 
             return ds;
         }
+        //Returns invoice by invoice number
         public DataTable SelectInvoiceId(string invoiceNumber)
         {
             var di = new DataTable();
@@ -1115,6 +1145,7 @@ namespace Invoice
 
             return ds;
         }
+        //Returns Invoice and Client by invoice id
         public DataTable SelectInvoiceAndClient(int invoiceId)
         {
             var ds = new DataTable();
@@ -1149,7 +1180,7 @@ namespace Invoice
 
             return ds;
         }
-
+        //Returns user's company
         public DataTable SelectOwnCompany()
         {
             var ds = new DataTable();
@@ -1184,7 +1215,7 @@ namespace Invoice
 
             return ds;
         }
-
+        //returns Payment method
         public DataTable SelectPaymentMethod()
         {
             var ds = new DataTable();
@@ -1219,5 +1250,66 @@ namespace Invoice
 
             return ds;
         }
+        // Returns Payment amount for Invoice
+        public float GetPaymentAmount(int invoiceId)
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select Sum(Payment_Amount) as [Payment_Amount] from Payment where Id_Invoice = " + invoiceId;
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            if (!float.TryParse(ds.Rows[0]["Payment_Amount"].ToString(), out var paymentAmount))
+            {
+                paymentAmount = 0;
+            }
+            
+            return paymentAmount;
+        }
+        // Returns Payment table
+        public DataTable SelectPayments(int invoiceId)
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select * from Payment where Id_Invoice = " + invoiceId;
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
     }
+    
 }

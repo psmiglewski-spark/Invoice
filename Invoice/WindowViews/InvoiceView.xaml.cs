@@ -50,6 +50,43 @@ namespace Invoice
             splitPaymentCheckBox.Unchecked += SplitPaymentCheckBox_Unchecked;
             InvoiceClientViewLoad(_id);
             InvoicePositionViewLoad(_id);
+            paymentStatusBtn.Background = new SolidColorBrush(Colors.Red);
+            var paymentStatus = CheckPayment(id);
+            MessageBox.Show(paymentStatus.ToString());
+            switch (paymentStatus)
+            {
+                case 0:
+                {
+                    paymentStatusBtn.Background = new SolidColorBrush(Colors.Red);
+                    paymentStatusBtn.Content = "Nie zapłacona";
+                    paymentStatusBtn.FontSize = 10;
+                    break;
+                }
+                case 1:
+                {
+                    paymentStatusBtn.Background = new SolidColorBrush(Colors.Yellow);
+                    paymentStatusBtn.Content = "Częściowo zapłacona";
+                    break;
+                }
+                case 2:
+                {
+                    paymentStatusBtn.Background = new SolidColorBrush(Colors.GreenYellow);
+                    paymentStatusBtn.Content = "Zapłacona";
+                    paymentStatusBtn.FontSize = 10;
+                    break;
+                }
+                case 3:
+                {
+                    paymentStatusBtn.Background = new SolidColorBrush(Colors.DeepPink);
+                    paymentStatusBtn.Content = "Nadpłacona";
+                    paymentStatusBtn.FontSize = 10; 
+                    break;
+                }
+            }
+            PaymentValueViewLoad(_id);
+
+            
+
         }
 
         private void SplitPaymentCheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -496,6 +533,11 @@ namespace Invoice
                 throw;
             }
             db.DeleteInvoiceNumber("new");
+            if (invoiceNumberTxtBox.Text == "new")
+            {
+                db.DeleteAllInvoicePos(_id);
+            }
+
             this.Close();
         }
 
@@ -549,21 +591,7 @@ namespace Invoice
                     splitPayment = splitPaymentCheck ? 1 : 0;
                     db.UpdateInvoice(invoiceNumberTxtBox.Text, clientIdResult, clientNameTxtBox.Text, NipTxtBox.Text, clientAddressTxtBox.Text, clientAddressPosNumberTxtBox.Text, clientAddressLocNumberTxtBox.Text, ClientPostalCodeTxtBox.Text, ClientCityTxtBox.Text, ClientCountryTxtBox.Text, issuedateResult, saledateResult, paymentdateResult, paymentMethodCBox.Text, accountNumberCBox.Text, splitPayment, noteTxtBox.Text, sumNetValue, sumVatValue, vat, sumGrossValue, issuingUserNameLbl.Content.ToString(), currencyCBox.Text, 1f, splitPaymentAccountCBox.Text, _id, kwotaSlownie);
                
-                //else
-                //{
-                //    int splitPayment;
-                //    int.TryParse(clientIdTxtBox.Text, out var clientIdResult);
-                //    DateTime.TryParse(issuingDateDatePick.SelectedDate.ToString(), out var issuedateResult);
-                //    MessageBox.Show(issuingDateDatePick.SelectedDate.ToString());
-                //    DateTime.TryParse(sellDateDatePick.SelectedDate.ToString(), out var saledateResult);
-                //    DateTime.TryParse(paymentDateDatePick.SelectedDate.ToString(), out var paymentdateResult);
-                //    bool splitPaymentCheck = Convert.ToBoolean(splitPaymentCheckBox.IsChecked);
-                //    splitPayment = splitPaymentCheck ? 1 : 0;
-                //    db.InsertInvoice(invoiceNumberTxtBox.Text, clientIdResult, clientNameTxtBox.Text, NipTxtBox.Text, clientAddressTxtBox.Text, clientAddressPosNumberTxtBox.Text, clientAddressLocNumberTxtBox.Text, ClientPostalCodeTxtBox.Text, ClientCityTxtBox.Text, ClientCountryTxtBox.Text, issuedateResult, saledateResult, paymentdateResult, paymentMethodCBox.Text, accountNumberCBox.Text, splitPayment, noteTxtBox.Text, sumNetValue, sumVatValue, vat, sumGrossValue, issuingUserNameLbl.Content.ToString(), currencyCBox.Text, 1f, splitPaymentAccountCBox.Text, kwotaSlownie);
-                //    var did = db.SelectInvoiceId(invoiceNumberTxtBox.Text);
-                //    int.TryParse(did.Rows[0]["InvoiceID"].ToString(), out var invoiceIdResult);
-                //    _id = invoiceIdResult;
-                //}
+               
 
               
 
@@ -583,7 +611,117 @@ namespace Invoice
             var db = new DataBase();
             db.DeleteInvoice(_id);
             db.DeleteInvoiceNumber("new");
+            db.DeleteAllInvoicePos(_id);
             this.Close();
+        }
+
+        private int CheckPayment(int id)
+        {
+            var db = new DataBase();
+            float paymentAmount = db.GetPaymentAmount(id);
+            var di = db.SelectInvoice(id);
+            float.TryParse(di.Rows[0]["Gross_Value"].ToString(), out var invoiceGrossValue);
+
+
+            if (paymentAmount == 0)
+            {
+                return 0;
+            }
+            else if (paymentAmount < invoiceGrossValue)
+            {
+                return 1;
+            }
+            else if (paymentAmount == invoiceGrossValue)
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+
+        }
+
+        private void PaymentValueViewLoad(int id)
+        {
+            var db = new DataBase();
+            var dp = db.SelectPayments(id);
+            int index = 1;
+            Label lpLabel = new Label
+            {
+                Content = "Lp.",
+                Width = 27,
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                BorderThickness = new Thickness(1)
+            };
+            Label paymentAmountLabel = new Label
+            {
+                Content = "Kwota wpłaty",
+                Width = 125,
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                BorderThickness = new Thickness(1)
+            };
+            Label paymentDateLabel = new Label
+            {
+                Content = "Data wpłaty",
+                Width = 121,
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                BorderThickness = new Thickness(1)
+            };
+            Label paymentCurrencyLabel = new Label
+            {
+                Content = "Waluta",
+                Width = 50,
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                BorderThickness = new Thickness(1)
+            };
+            Button addButton = new Button
+            {
+                RenderTransformOrigin = new Point(0.392, 0.167),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Width = 20,
+                Height = 20,
+                Content = "+"
+            };
+            WrapPanel panel = new WrapPanel();
+            panel.Children.Add(lpLabel);
+            panel.Children.Add(paymentAmountLabel);
+            panel.Children.Add(paymentDateLabel);
+            panel.Children.Add(paymentCurrencyLabel);
+            panel.Children.Add(addButton);
+            paymentValueStack.Children.Add(panel);
+
+            if (_id != -1)
+            {
+                try
+                {
+                    foreach (DataRow dr in dp.Rows)
+                    {
+
+                        int.TryParse(dr["PaymentId"].ToString(), out var paymentId);
+                        float.TryParse(dr["Payment_Amount"].ToString(), out var paymentAmount);
+                        MessageBox.Show(dr["Payment_Amount"].ToString());
+                        DateTime.TryParse(dr["Payment_Date"].ToString(), out var paymentDate);
+                        
+                       
+
+
+                        paymentValueStack.Children.Add(new PaymentValue(_id, paymentId, index, paymentAmount, paymentDate, dr["Payment_Currency"].ToString() ));
+
+                    }
+
+
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+
+            //paymentValueStack.Children.Add(new PaymentValue(1));    
         }
     }
 }
