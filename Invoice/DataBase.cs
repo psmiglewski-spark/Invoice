@@ -463,7 +463,33 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        //Adds payment position
+        public void InsertPaymentPos(int id_Invoice, float paymentAmount, string paymentCurrency, DateTime paymentDate)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
 
+                string updateQuery = "insert into dbo.Payment ([Id_Invoice], [Payment_Amount], [Payment_Currency], [Payment_Date])  values (@idInvoice, @paymentAmount, @paymentCurrency, @paymentDate)";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection); sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@idInvoice", id_Invoice);
+                sqlCommand.Parameters.AddWithValue("@paymentAmount", paymentAmount);
+                sqlCommand.Parameters.AddWithValue("@paymentCurrency", paymentCurrency);
+                sqlCommand.Parameters.AddWithValue("@paymentDate", paymentDate);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
 
         //Update queries
         //Updates user
@@ -609,6 +635,34 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        //Updates payment Position
+        public void UpdatePaymentPos(int paymentId, float paymentAmount, string paymentCurrency, DateTime paymentDate)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "update dbo.Payment set Payment_Amount = @paymentAmount, Payment_Currency = @paymentCurrency, Payment_Date = @paymentDate  where PaymentId = @paymentId ";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@paymentAmount", paymentAmount);
+                sqlCommand.Parameters.AddWithValue("@paymentCurrency", paymentCurrency);
+                sqlCommand.Parameters.AddWithValue("@paymentDate", paymentDate);
+                sqlCommand.Parameters.AddWithValue("@paymentId", paymentId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
 
         //Delete queries
         //Deletes user by userName
@@ -663,6 +717,30 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        // Deletes payment pos by id
+        public void DeletePaymentPos(int id_Payment)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "Delete from Payment where PaymentId = " + id_Payment;
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
         // Deletes all invoice positions from invoice
         public void DeleteAllInvoicePos(int invoiceId)
         {
@@ -672,6 +750,31 @@ namespace Invoice
             {
 
                 string updateQuery = "Delete from Invoice_Pos where ID_Invoice = " + invoiceId;
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@invoicePosId", invoiceId);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        //Deletes payments by invoice ID
+        public void DeleteAllPaymentPos(int invoiceId)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "Delete from Payment where ID_Invoice = " + invoiceId;
                 SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection);
                 sqlConnection.Open();
                 sqlCommand.Parameters.AddWithValue("@invoicePosId", invoiceId);
@@ -916,7 +1019,6 @@ namespace Invoice
 
             return di;
         }
-
         //Returns dataset of all invoices
         public DataTable SelectAllInvoices()
         {
@@ -1309,6 +1411,35 @@ namespace Invoice
             }
 
             return ds;
+        }
+        public int SelectCountPayments(int invoiceId)
+        {
+            var ds = new DataTable();
+            var _result = 0;
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select Count(*) as [Result] from Payment where Id_Invoice = " + invoiceId;
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+                int.TryParse(ds.Rows[0]["Result"].ToString(),out var result );
+                _result = result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return _result;
         }
     }
     

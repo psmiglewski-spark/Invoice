@@ -12,6 +12,9 @@ namespace Invoice
     class PaymentValue : WrapPanel
     {
         private bool _textBoxChanged = false;
+        private int _id_Payment;
+        private int _isNew = 0;
+        private int _idInvoice;
         TextBox lpTxtBox = new TextBox()
         {
             Width = 27,
@@ -56,9 +59,12 @@ namespace Invoice
             Background = new SolidColorBrush(Colors.Red)
         };
 
-        public PaymentValue(int id, int id_payment, int index, float paymentAmountValue, DateTime paymentDate,
+        public PaymentValue(int isNew,int idInvoice, int id_payment, int index, float paymentAmountValue, DateTime paymentDate,
             string paymentCurrency)
         {
+            this._id_Payment = id_payment;
+            this._idInvoice = idInvoice;
+            this._isNew = isNew;
             paymentAmountTxtBox.Text = paymentAmountValue.ToString();
             paymentDateDatePicker.SelectedDate = paymentDate;
             paymentCurrencyTxtBox.Text = paymentCurrency;
@@ -96,13 +102,22 @@ namespace Invoice
 
         private void PaymentDateDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (_textBoxChanged == false)
+            {
+
+
+
+
+                saveBtn.Visibility = Visibility.Visible;
+
+                _textBoxChanged = true;
+            }
         }
 
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             DataBase db = new DataBase();
-            // db.DeleteInvoicePos(idPos);
+            db.DeletePaymentPos(_id_Payment);
             this.Visibility = Visibility.Collapsed;
 
         }
@@ -112,24 +127,22 @@ namespace Invoice
 
             DataBase db = new DataBase();
 
-            //int.TryParse(quantityTxtBox.Text, out var quantResult);
-            //float.TryParse(netValueTxtBox.Text, out var netResult);
+            DateTime.TryParse(paymentDateDatePicker.SelectedDate.ToString(), out var paymentDateResult);
+            float.TryParse(paymentAmountTxtBox.Text, out var paymentAmountResult);
 
-            //float.TryParse(vatTxtBox.Text, out var vatResult);
-            //if (_isNew == 0)
-            //{
-            //    db.UpdateInvoicePos(idPos, productNameTxtBox.Text, productCodeTxtBox.Text, quantResult,
-            //        unitOfMeasureTxtBox.Text, netResult, (netResult * (vatResult / 100)),
-            //        (netResult * (1 + vatResult / 100)), vatTxtBox.Text);
-            //}
-            //else
-            //{
-            //    db.InsertInvoicePos(productNameTxtBox.Text, productCodeTxtBox.Text, quantResult,
-            //        unitOfMeasureTxtBox.Text, netResult, (netResult * (vatResult / 100)),
-            //        (netResult * (1 + vatResult / 100)), vatTxtBox.Text, _invoiceId);
-            //}
+            
+            if (_isNew == 0)
+            {
+                db.UpdatePaymentPos(_id_Payment, paymentAmountResult, paymentCurrencyTxtBox.Text, paymentDateResult );
+            }
+            else
+            {
+                db.InsertPaymentPos(_idInvoice,paymentAmountResult, paymentCurrencyTxtBox.Text, paymentDateResult);
+            }
 
             saveBtn.Visibility = Visibility.Hidden;
+
+            _textBoxChanged = false;
         }
      
     }
