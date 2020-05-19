@@ -586,9 +586,31 @@ namespace Invoice
                 throw;
             }
 
-           
-            var di = db.SelectInvoiceId("new");
-            int.TryParse(di.Rows[0]["InvoiceID"].ToString(), out var result);
+            int result = 0;
+            var di = new DataTable();
+            di = null;
+            try
+            {
+              di = db.SelectInvoiceId("new");
+            }
+            catch (Exception exception)
+            {
+                System.Windows.MessageBox.Show(exception.ToString());
+               
+            }
+
+            try
+            {
+                int.TryParse(di.Rows[0]["InvoiceID"].ToString(), out result);
+            }
+            catch (Exception exception)
+            {
+              //  System.Windows.MessageBox.Show(exception.ToString());
+                
+            }
+               
+            
+
             db.DeleteAllInvoicePos(result);
             db.DeleteAllPaymentPos(result);
             db.DeleteInvoiceNumber("new");
