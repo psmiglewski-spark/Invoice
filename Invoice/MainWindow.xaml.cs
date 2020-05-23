@@ -36,13 +36,21 @@ namespace Invoice
             var loginWindow = new LoginWindow();
             loginWindow.ShowDialog();
             var client = new Client();
-           // client.CheckWl("6972171117","2020-04-30");
-            
-            FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;
-            
-            
+            // client.CheckWl("6972171117","2020-04-30");
             var dt = new DataTable();
             var db = new DataBase();
+            FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;
+            CurrencyTable currency = new CurrencyTable();
+            var listaWalut = currency.Currencies();
+            
+            //foreach (var waluta in listaWalut)
+            //{
+            //    db.InsertCurrencyList(waluta.currency,waluta.code,"");
+            //}
+
+            MessageBox.Show(currency.CheckExchangeRate("EUR", DateTime.Today).ToString());
+            
+            
             filter1Lbl.Content = "Numer faktury";
             filter2Lbl.Content = "Nazwa klienta";
             dateFilterLbl.Content = "Data od:";

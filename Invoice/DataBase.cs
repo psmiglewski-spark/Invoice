@@ -490,7 +490,58 @@ namespace Invoice
                 sqlConnection.Close();
             }
         }
+        //Adds currency list
+        public void InsertCurrencyList(string currencyName, string currencyCode, string currencyCountry)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
 
+                string updateQuery = "insert into dbo.Dictionary_Currency ([Currency_Name], [Currency_Code], [Currency_Country])  values (@currencyName, @currencyCode, @currencyCountry)";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection); sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@currencyName", currencyName);
+                sqlCommand.Parameters.AddWithValue("@currencyCode", currencyCode);
+                sqlCommand.Parameters.AddWithValue("@currencyCountry", currencyCountry);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+        //Adds currency rates table
+        public void InsertCurrencyRatesTable(DateTime date, string jsonString)
+        {
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            try
+            {
+
+                string updateQuery = "insert into dbo.Currency_Rates_Table ([Currency_Rates_Table_Date], [Currency_Rates_Table_JsonString])  values (@date, @jsonString)";
+                SqlCommand sqlCommand = new SqlCommand(updateQuery, sqlConnection); sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@date", date);
+                sqlCommand.Parameters.AddWithValue("@jsonString", jsonString);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+      
         //Update queries
         //Updates user
         public void UpdateUser(string userLogin, string password, int role)
@@ -1412,6 +1463,7 @@ namespace Invoice
 
             return ds;
         }
+        // Returns payment count for invoice
         public int SelectCountPayments(int invoiceId)
         {
             var ds = new DataTable();
@@ -1440,6 +1492,99 @@ namespace Invoice
             }
 
             return _result;
+        }
+        //Returns true if there is currency exchange rate table for today in db
+        public bool SelectCurrencyRates(string date)
+        {
+            var ds = new DataTable();
+            var _result = 0;
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select Count(*) as [Result] from Currency_Rates_Table where Currency_Rates_Table_Date = " + "'" + date + "'";
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+                int.TryParse(ds.Rows[0]["Result"].ToString(), out var result);
+                _result = result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            if (_result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        //Select today's currency rates
+        public DataTable SelectCurrencyRatesTable(string date)
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select Top 1 [Currency_Rates_Table_JsonString] from Currency_Rates_Table where Currency_Rates_Table_Date = " + "'" + date + "'" ;
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+        //Returns Currency codes table
+        public DataTable SelectCurrencyCodeTable()
+        {
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            var salCommand = "Select [Currency_Code] from Dictionary_Currency";
+
+            try
+            {
+
+                var da = new SqlDataAdapter(salCommand, sqlConnection);
+                da.Fill(ds);
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
         }
     }
     

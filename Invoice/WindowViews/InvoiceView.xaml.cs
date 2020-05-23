@@ -147,16 +147,30 @@ namespace Invoice
         {
             var db = new DataBase();
             var di = db.SelectInvoiceAndClient(id);
+            var dcurrency = db.SelectCurrencyCodeTable();
             var dc = db.SelectOwnCompany();
             var dp = db.SelectPaymentMethod();
             var paymentMethodsList = new List<string>();
             var accountNumberList = new List<string>();
             var vatAccountNumberList = new List<string>();
+            var currencyCodeList = new List<string>();
             try
             {
                 foreach (DataRow dr in dp.Rows)
                 {
                     paymentMethodsList.Add(dr["Payment_Method_Name"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+
+            }
+            try
+            {
+                foreach (DataRow dr in dcurrency.Rows)
+                {
+                    currencyCodeList.Add(dr["Currency_Code"].ToString());
                 }
             }
             catch (Exception e)
@@ -221,6 +235,8 @@ namespace Invoice
                 splitPaymentAccountCBox.ItemsSource = vatAccountNumberList;
                 accountNumberCBox.SelectedItem = di.Rows[0]["Payment_Account"].ToString();
                 splitPaymentAccountCBox.SelectedItem = di.Rows[0]["Vat_Account"].ToString();
+                currencyCBox.ItemsSource = currencyCodeList;
+                currencyCBox.SelectedItem = di.Rows[0]["Currency"].ToString();
                 if ((int) di.Rows[0]["SplitPayment"] == 1)
                 {
                     splitPaymentCheckBox.IsChecked = true;

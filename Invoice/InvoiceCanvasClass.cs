@@ -98,17 +98,16 @@ namespace Invoice
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var invoice = new InvoiceView(_id);
-             MessageBox.Show(this._id.ToString());
              try
              {
                  invoice.ShowDialog();
 
             }
             catch (Exception exception)
-             {
-                 System.Windows.MessageBox.Show(exception.ToString());
+            {
+                System.Windows.MessageBox.Show(exception.ToString());
                  
-             }
+            }
              
         }
 
