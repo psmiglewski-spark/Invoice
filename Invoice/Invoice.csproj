@@ -111,14 +111,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Client.cs" />
-    <Compile Include="Currency.cs" />
-    <Compile Include="CurrencyTable.cs" />
-    <Compile Include="DataBase.cs" />
-    <Compile Include="Email.cs" />
-    <Compile Include="Extension.cs" />
-    <Compile Include="InvoiceCanvasClass.cs" />
-    <Compile Include="InvoiceClass.cs" />
+    <Compile Include="InvoiceClasses\Client.cs" />
+    <Compile Include="InvoiceClasses\Currency.cs" />
+    <Compile Include="InvoiceClasses\CurrencyTable.cs" />
+    <Compile Include="InvoiceClasses\DataBase.cs" />
+    <Compile Include="Lib\Email.cs" />
+    <Compile Include="Lib\Extension.cs" />
+    <Compile Include="ViewElements\ClientListClass.cs" />
+    <Compile Include="ViewElements\ClientListView.cs" />
+    <Compile Include="ViewElements\InvoiceCanvasClass.cs" />
+    <Compile Include="InvoiceClasses\InvoiceClass.cs" />
     <Compile Include="InvoiceDataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -149,14 +151,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InvoiceInvoice.xsd</DependentUpon>
     </Compile>
-    <Compile Include="InvoicePosClass.cs" />
-    <Compile Include="InvoicePossitionViewClass.cs" />
-    <Compile Include="PaymentValue.cs" />
+    <Compile Include="InvoiceClasses\InvoicePosClass.cs" />
+    <Compile Include="ViewElements\InvoicePossitionViewClass.cs" />
+    <Compile Include="InvoiceClasses\PaymentValue.cs" />
+    <Compile Include="WindowViews\ClientWindow.xaml.cs">
+      <DependentUpon>ClientWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowViews\InvoiceView.xaml.cs">
       <DependentUpon>InvoiceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="KwotaSlownie.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="Lib\KwotaSlownie.cs" />
+    <Compile Include="WindowViews\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PrintReports\Invoice\InvoiceDataSet.Designer.cs">
@@ -179,23 +184,27 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ReportsWindow.xaml.cs">
+    <Compile Include="WindowViews\ReportsWindow.xaml.cs">
       <DependentUpon>ReportsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setup.cs" />
+    <Compile Include="Lib\Setup.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="StringCrypt.cs" />
-    <Compile Include="Users.cs" />
+    <Compile Include="Lib\StringCrypt.cs" />
+    <Compile Include="InvoiceClasses\Users.cs" />
     <Compile Include="Vat_Table.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Vat_Table.xsd</DependentUpon>
     </Compile>
+    <Page Include="WindowViews\ClientWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowViews\InvoiceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginWindow.xaml">
+    <Page Include="WindowViews\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -216,7 +225,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ReportsWindow.xaml">
+    <Page Include="WindowViews\ReportsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

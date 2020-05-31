@@ -7,7 +7,7 @@
         xmlns:winForms="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
         mc:Ignorable="d"
         Title="MainWindow" WindowStartupLocation="CenterScreen" WindowState="Maximized" d:DesignWidth="1891.5" d:DesignHeight="994">
-    <Grid>
+    <Grid x:Name="mainGrid">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Menu >
                 <MenuItem Header="_System">
@@ -32,20 +32,25 @@
             <TextBox AcceptsReturn="True" />
 
         </StackPanel>
-        <ScrollViewer Margin="476,326,52,145">
+        <ScrollViewer Margin="476,352,52,119">
             <Grid x:Name="invoiceGrid"  HorizontalAlignment="Left"   VerticalAlignment="Top">
 
             </Grid>
         </ScrollViewer>
-        <Label x:Name="mainLabel" Content="Label" HorizontalAlignment="Left" Margin="1072,209,0,0" VerticalAlignment="Top" FontSize="22" RenderTransformOrigin="0.467,0.679"/>
-        <TextBox x:Name="filter1TxtBox" HorizontalAlignment="Left" Height="23" Margin="770,301,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="filter2TxtBox" HorizontalAlignment="Left" Height="23" Margin="1036,301,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.025,0.217"/>
-        <Label x:Name="filter1Lbl" Content="Label" HorizontalAlignment="Left" Margin="654,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.868,-0.75" Width="98"/>
-        <Label x:Name="filter2Lbl" Content="Label" HorizontalAlignment="Left" Margin="932,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.868,-0.75" Width="98"/>
-        <Label x:Name="dateFilterLbl" Content="Label" HorizontalAlignment="Left" Margin="1194,297,0,0" VerticalAlignment="Top" Width="102"/>
-        <DatePicker x:Name ="dateFromDate"  HorizontalAlignment="Left" Margin="1300,297,0,0" VerticalAlignment="Top" Cursor="Arrow"/>
-        <DatePicker x:Name ="dateToDate" HorizontalAlignment="Left" Margin="1496,297,0,0" VerticalAlignment="Top" Cursor="Arrow"/>
-        <Label x:Name="dateLbl2" Content="Label" HorizontalAlignment="Left" Margin="1432,295,0,0" VerticalAlignment="Top" Width="40"/>
-        <Button x:Name="filterBtn" Content="Szukaj" HorizontalAlignment="Left" Margin="1625,298,0,0" VerticalAlignment="Top" Width="75" Click="filterBtn_Click"/>
+        <Grid x:Name="filterGrid" >
+            <Label x:Name="mainLabel" Content="Label" HorizontalAlignment="Left" Margin="1072,209,0,0" VerticalAlignment="Top" FontSize="22" RenderTransformOrigin="0.467,0.679"/>
+            <TextBox x:Name="filter1TxtBox" HorizontalAlignment="Left" Height="23" Margin="770,301,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="filter2TxtBox" HorizontalAlignment="Left" Height="23" Margin="1036,301,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" RenderTransformOrigin="1.025,0.217"/>
+            <Label x:Name="filter1Lbl" Content="Label" HorizontalAlignment="Left" Margin="654,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.868,-0.75" Width="98"/>
+            <Label x:Name="filter2Lbl" Content="Label" HorizontalAlignment="Left" Margin="932,297,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.868,-0.75" Width="98"/>
+            <Label x:Name="dateFilterLbl" Content="Label" HorizontalAlignment="Left" Margin="1194,297,0,0" VerticalAlignment="Top" Width="102"/>
+            <DatePicker x:Name ="dateFromDate"  HorizontalAlignment="Left" Margin="1300,297,0,0" VerticalAlignment="Top" Cursor="Arrow"/>
+            <DatePicker x:Name ="dateToDate" HorizontalAlignment="Left" Margin="1496,297,0,0" VerticalAlignment="Top" Cursor="Arrow"/>
+            <Label x:Name="dateLbl2" Content="Label" HorizontalAlignment="Left" Margin="1432,295,0,0" VerticalAlignment="Top" Width="40"/>
+            <Button x:Name="filterBtn" Content="Szukaj" HorizontalAlignment="Left" Margin="1625,298,0,0" VerticalAlignment="Top" Width="75" Click="filterBtn_Click"/>
+            
+        </Grid>
+        <Button x:Name="fakturyListBtn" Content="Faktury" HorizontalAlignment="Left" Margin="23,100,0,0" VerticalAlignment="Top" Width="175" RenderTransformOrigin="-5.52,2.375" Height="70" FontSize="20" Click="fakturyListBtn_Click"/>
+        <Button x:Name="KontrahenciListBtn" Content="Kontrahenci" HorizontalAlignment="Left" Margin="23,194,0,0" VerticalAlignment="Top" Width="175" RenderTransformOrigin="-5.52,2.375" Height="70" FontSize="20" Click="KontrahenciListBtn_Click"/>
     </Grid>
 </Window>
