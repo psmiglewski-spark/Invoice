@@ -207,7 +207,7 @@ namespace Invoice
             //listDataGrid.DataContext = dt.DefaultView;
             this.GotFocus += MainWindow_GotFocus;
             InvoiceList(dt);
-            lpTxtBox.TextChanged += LpTxtBox_TextChanged;
+            lpTxtBox.IsEnabled = false;
             clientIdTxtBox.TextChanged += ClientIdTxtBox_TextChanged;
             symbolTxtBox.TextChanged += SymbolTxtBox_TextChanged;
             nameTxtBox.TextChanged += NameTxtBox_TextChanged;
@@ -219,38 +219,215 @@ namespace Invoice
 
         private void PhoneTxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-          
+            selectedList = 2;
+            invoiceGrid.Children.Clear();
+            var db = new DataBase();
+            var index = 1;
+            int.TryParse(clientIdTxtBox.Text, out var idClient);
+            
+            var dt = db.ClientListFiltered(idClient, symbolTxtBox.Text, nameTxtBox.Text, addressTxtBox.Text,
+                addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, nipTxtBox.Text,
+                phoneTxtBox.Text);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int.TryParse(dr["ClientId"].ToString(), out var id);
+                    string _address = dr["Address_Street"] + " " + dr["Address_Pos_Number"] + " " +
+                                      dr["Address_Loc_Number"] + ", " +
+                                      dr["Address_Postal_Code"] + " " + dr["Address_City"];
+                    invoiceGrid.Children.Add(new ClientListClass(index, id, dr["Short_Name"].ToString(),
+                        dr["Name"].ToString(), _address, dr["nip"].ToString(), dr["Phone_Number"].ToString()));
+                    //invoiceList.Add(dr);
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    index++;
+                }
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+                throw;
+            }
         }
 
         private void NipTxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            selectedList = 2;
+            invoiceGrid.Children.Clear();
+            var db = new DataBase();
+            var index = 1;
+            int.TryParse(clientIdTxtBox.Text, out var idClient);
+
+            var dt = db.ClientListFiltered(idClient, symbolTxtBox.Text, nameTxtBox.Text, addressTxtBox.Text,
+                addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, nipTxtBox.Text,
+                phoneTxtBox.Text);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int.TryParse(dr["ClientId"].ToString(), out var id);
+                    string _address = dr["Address_Street"] + " " + dr["Address_Pos_Number"] + " " +
+                                      dr["Address_Loc_Number"] + ", " +
+                                      dr["Address_Postal_Code"] + " " + dr["Address_City"];
+                    invoiceGrid.Children.Add(new ClientListClass(index, id, dr["Short_Name"].ToString(),
+                        dr["Name"].ToString(), _address, dr["nip"].ToString(), dr["Phone_Number"].ToString()));
+                    //invoiceList.Add(dr);
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    index++;
+                }
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+                throw;
+            }
         }
 
         private void AddressTxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-          
+            selectedList = 2;
+            invoiceGrid.Children.Clear();
+            var db = new DataBase();
+            var index = 1;
+            int.TryParse(clientIdTxtBox.Text, out var idClient);
+
+            var dt = db.ClientListFiltered(idClient, symbolTxtBox.Text, nameTxtBox.Text, addressTxtBox.Text,
+                addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, nipTxtBox.Text,
+                phoneTxtBox.Text);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int.TryParse(dr["ClientId"].ToString(), out var id);
+                    string _address = dr["Address_Street"] + " " + dr["Address_Pos_Number"] + " " +
+                                      dr["Address_Loc_Number"] + ", " +
+                                      dr["Address_Postal_Code"] + " " + dr["Address_City"];
+                    invoiceGrid.Children.Add(new ClientListClass(index, id, dr["Short_Name"].ToString(),
+                        dr["Name"].ToString(), _address, dr["nip"].ToString(), dr["Phone_Number"].ToString()));
+                    //invoiceList.Add(dr);
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    index++;
+                }
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+                throw;
+            }
         }
 
         private void NameTxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            selectedList = 2;
+            invoiceGrid.Children.Clear();
+            var db = new DataBase();
+            var index = 1;
+            int.TryParse(clientIdTxtBox.Text, out var idClient);
+
+            var dt = db.ClientListFiltered(idClient, symbolTxtBox.Text, nameTxtBox.Text, addressTxtBox.Text,
+                addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, nipTxtBox.Text,
+                phoneTxtBox.Text);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int.TryParse(dr["ClientId"].ToString(), out var id);
+                    string _address = dr["Address_Street"] + " " + dr["Address_Pos_Number"] + " " +
+                                      dr["Address_Loc_Number"] + ", " +
+                                      dr["Address_Postal_Code"] + " " + dr["Address_City"];
+                    invoiceGrid.Children.Add(new ClientListClass(index, id, dr["Short_Name"].ToString(),
+                        dr["Name"].ToString(), _address, dr["nip"].ToString(), dr["Phone_Number"].ToString()));
+                    //invoiceList.Add(dr);
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    index++;
+                }
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+                throw;
+            }
         }
 
         private void SymbolTxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            selectedList = 2;
+            invoiceGrid.Children.Clear();
+            var db = new DataBase();
+            var index = 1;
+            int.TryParse(clientIdTxtBox.Text, out var idClient);
+
+            var dt = db.ClientListFiltered(idClient, symbolTxtBox.Text, nameTxtBox.Text, addressTxtBox.Text,
+                addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, nipTxtBox.Text,
+                phoneTxtBox.Text);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int.TryParse(dr["ClientId"].ToString(), out var id);
+                    string _address = dr["Address_Street"] + " " + dr["Address_Pos_Number"] + " " +
+                                      dr["Address_Loc_Number"] + ", " +
+                                      dr["Address_Postal_Code"] + " " + dr["Address_City"];
+                    invoiceGrid.Children.Add(new ClientListClass(index, id, dr["Short_Name"].ToString(),
+                        dr["Name"].ToString(), _address, dr["nip"].ToString(), dr["Phone_Number"].ToString()));
+                    //invoiceList.Add(dr);
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    index++;
+                }
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+                throw;
+            }
         }
 
         private void ClientIdTxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            selectedList = 2;
+            invoiceGrid.Children.Clear();
+            var db = new DataBase();
+            var index = 1;
+            int.TryParse(clientIdTxtBox.Text, out var idClient);
+
+            var dt = db.ClientListFiltered(idClient, symbolTxtBox.Text, nameTxtBox.Text, addressTxtBox.Text,
+                addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, addressTxtBox.Text, nipTxtBox.Text,
+                phoneTxtBox.Text);
+            try
+            {
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int.TryParse(dr["ClientId"].ToString(), out var id);
+                    string _address = dr["Address_Street"] + " " + dr["Address_Pos_Number"] + " " +
+                                      dr["Address_Loc_Number"] + ", " +
+                                      dr["Address_Postal_Code"] + " " + dr["Address_City"];
+                    invoiceGrid.Children.Add(new ClientListClass(index, id, dr["Short_Name"].ToString(),
+                        dr["Name"].ToString(), _address, dr["nip"].ToString(), dr["Phone_Number"].ToString()));
+                    //invoiceList.Add(dr);
+                    //panel.Children.Add(InvoiceCanvas(dr["Issue_Date"].ToString().Remove(10), dr["Client_Name"].ToString(),
+                    //    dr["Gross_Value"].ToString() +" "+ dr["Currency"], dr["Invoice_Number"].ToString(), "status"));
+                    index++;
+                }
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+                throw;
+            }
         }
 
-        private void LpTxtBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            MessageBox.Show(lpTxtBox.Text);
-        }
+       
 
         private void MainWindow_GotFocus(object sender, RoutedEventArgs e)
         {

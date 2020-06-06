@@ -5,8 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Invoice.WindowViews"
         mc:Ignorable="d"
-        Title="ClientWindow" Height="450" Width="800">
+        Title="ClientWindow" Height="718.114" Width="1379.341">
     <Grid>
-        
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="304" Stroke="Black" VerticalAlignment="Top" Width="1371"/>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="373" Margin="0,304,0,0" VerticalAlignment="Top" Width="911">
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Finansowe">
+                <Grid Background="#FFE5E5E5" Margin="10,0,-10,0">
+
+
+                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="156,38,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+                    <Label x:Name="AccountNumberLbl"  Content="Numer Konta:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.35,-0.852"/>
+                    <TextBox x:Name="AccountNumberTxtBox"  HorizontalAlignment="Left" Height="23" Margin="10,37,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137"/>
+                    <Label x:Name="VatAccountNumberLbl"  Content="Numer Konta VAT:" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.35,-0.852"/>
+                    <TextBox x:Name="VatAccountNumberTxtBox"  HorizontalAlignment="Left" Height="23" Margin="10,96,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137"/>
+                    <Label x:Name="AccountNumberLbl_Copy" Content="Numer Konta:" HorizontalAlignment="Left" Margin="156,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.35,-0.852"/>
+                    <Label x:Name="DiscountLbl"  Content="Rabat:" HorizontalAlignment="Left" Margin="156,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.35,-0.852"/>
+                    <TextBox x:Name="DiscountTxtBox"  HorizontalAlignment="Left" Height="23" Margin="156,96,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="43"/>
+                    <CheckBox x:Name="checkBox" Content="SplitPayment" HorizontalAlignment="Left" Margin="10,137,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Label x:Name="ClientIdLbl" Content="Numer Klienta:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="91"/>
+        <Label x:Name="IdClientLbl" Content="  " Background="AntiqueWhite" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="61" BorderThickness="0"/>
+        <Label x:Name="ShortNameLbl" Content="Symbol:" HorizontalAlignment="Left" Margin="200,10,0,0" VerticalAlignment="Top" Width="60"/>
+        <TextBox x:Name="ShortNameTxtBox" HorizontalAlignment="Left" Height="23" Margin="265,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="NameLbl" Content="Nazwa firmy:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="91"/>
+        <TextBox x:Name="NameTxtBox" HorizontalAlignment="Left" Height="23" Margin="10,72,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="375"/>
+        <Label x:Name="AddressStreetLbl" Content="Ulica:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="91"/>
+        <TextBox x:Name="AddressStreetTxtBox" HorizontalAlignment="Left" Height="23" Margin="10,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="280"/>
+        <Label x:Name="AddressPosNumberLbl" Content="Nr:" HorizontalAlignment="Left" Margin="294,100,0,0" VerticalAlignment="Top" Width="40"/>
+        <TextBox x:Name="AddressPosNumberTxtBox" HorizontalAlignment="Left" Height="23" Margin="295,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="40"/>
+        <Label x:Name="AddressLocNumberLbl" Content="Lok:" HorizontalAlignment="Left" Margin="341,100,0,0" VerticalAlignment="Top" Width="40"/>
+        <TextBox x:Name="AddressNumberTxtBox" HorizontalAlignment="Left" Height="23" Margin="343,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="40"/>
+        <Label x:Name="AddressCountryLbl" Content="Kraj:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="44"/>
+        <ComboBox x:Name="AddressCountryComboBox" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top" Width="91" AutomationProperties.HelpText="Wybierz kraj"/>
+        <Label x:Name="AddressPostalCode" Content="Kod pocztowy:" HorizontalAlignment="Left" Margin="110,155,0,0" VerticalAlignment="Top" Width="91"/>
+        <TextBox x:Name="AddressPostalCodeTxtBox" HorizontalAlignment="Left" Height="23" Margin="110,186,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="97"/>
+        <Label x:Name="AddressCityLbl" Content="Miasto:" HorizontalAlignment="Left" Margin="223,155,0,0" VerticalAlignment="Top" Width="67"/>
+        <TextBox x:Name="AddressPostalCodeTxtBox_Copy" HorizontalAlignment="Left" Height="23" Margin="223,186,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
+        <Label x:Name="AddressNipLbl" Content="NIP:" HorizontalAlignment="Left" Margin="406,10,0,0" VerticalAlignment="Top" Width="41"/>
+        <TextBox x:Name="ShortNipTxtBox" HorizontalAlignment="Left" Height="23" Margin="447,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="CeidgDownload" Content="Pobierz dane" HorizontalAlignment="Left" Margin="576,11,0,0" VerticalAlignment="Top" Width="75"/>
+        <ScrollViewer x:Name ="ClientTypeScroll"  HorizontalAlignment="Left" Height="137" Margin="406,72,0,0" VerticalAlignment="Top" Width="245"/>
+        <Label x:Name="ClientTypeLbl" Content="Typ klienta:" HorizontalAlignment="Left" Margin="406,41,0,0" VerticalAlignment="Top" Width="91"/>
+        <Label x:Name="PhoneNumberLbl" Content="Telefon kontaktowy:" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Width="122"/>
+        <TextBox x:Name="PhoneNumberTxtBox" HorizontalAlignment="Left" Height="23" Margin="10,246,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="157"/>
+        <Label x:Name="MobilePhoneNumberLbl" Content="Telefon komórkowy:" HorizontalAlignment="Left" Margin="178,217,0,0" VerticalAlignment="Top" Width="122"/>
+        <TextBox x:Name="MobilePhoneTxtBox" HorizontalAlignment="Left" Height="23" Margin="178,245,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="157"/>
+        <Label x:Name="EmailLbl" Content="E-mail:" HorizontalAlignment="Left" Margin="343,219,0,0" VerticalAlignment="Top" Width="56"/>
+        <TextBox x:Name="EmailTxtBox" HorizontalAlignment="Left" Height="23" Margin="343,245,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="157"/>
+
     </Grid>
 </Window>

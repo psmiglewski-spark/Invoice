@@ -1615,6 +1615,44 @@ namespace Invoice
 
             return ds;
         }
+        // Returns clients filtered
+        public DataTable ClientListFiltered(int? idClient, string symbol, string name, string addressStreet, string addressPosNumber, string addressLocNumber, string addressPostalCode, string addressCity, string nip, string phone)
+        {
+
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            if (idClient == 0)
+            {
+                idClient = null;
+            }
+            var sqlCommand = "Select * from Client where ClientId like " + "'%" + idClient + "%'" + " and Short_Name like '%" +
+                             symbol + "%' and Name like '%" + name + "%' and Address_Street like '%" + addressStreet +
+                             "%' and Address_Pos_Number like '%" + addressPosNumber + "%' and Address_Loc_Number like '%" +
+                             addressLocNumber + "%' and Address_Postal_Code like '%" + addressPostalCode +
+                             "%' and Address_City like '%" + addressCity + "%' and NIP like '%" + nip + "%' and Phone_Number like '%" +
+                             phone + "%'"; 
+            try
+            {
+
+                var da = new SqlDataAdapter(sqlCommand, sqlConnection);
+                da.Fill(ds);
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
     }
     
 }
