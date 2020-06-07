@@ -16,7 +16,7 @@
                 <Grid Background="#FFE5E5E5" Margin="10,0,-10,0">
 
 
-                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="156,38,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+                    <ComboBox x:Name="comboBox"  HorizontalAlignment="Left" Margin="156,38,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
                     <Label x:Name="AccountNumberLbl"  Content="Numer Konta:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.35,-0.852"/>
                     <TextBox x:Name="AccountNumberTxtBox"  HorizontalAlignment="Left" Height="23" Margin="10,37,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137"/>
                     <Label x:Name="VatAccountNumberLbl"  Content="Numer Konta VAT:" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.35,-0.852"/>
@@ -57,6 +57,8 @@
         <TextBox x:Name="MobilePhoneTxtBox" HorizontalAlignment="Left" Height="23" Margin="178,245,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="157"/>
         <Label x:Name="EmailLbl" Content="E-mail:" HorizontalAlignment="Left" Margin="343,219,0,0" VerticalAlignment="Top" Width="56"/>
         <TextBox x:Name="EmailTxtBox" HorizontalAlignment="Left" Height="23" Margin="343,245,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="157"/>
+        <Button x:Name="saveBtn" Content="Zapisz" HorizontalAlignment="Left" Margin="492,279,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="deleteBtn" Content="Usuń" HorizontalAlignment="Left" Margin="576,279,0,0" VerticalAlignment="Top" Width="75"/>
 
     </Grid>
 </Window>

@@ -1653,6 +1653,65 @@ namespace Invoice
 
             return ds;
         }
+
+        public DataTable ClientListFilteredName( string name)
+        {
+
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            
+            var sqlCommand = "Select * from Client where  Name like '%" + name + "%'" ;
+            try
+            {
+
+                var da = new SqlDataAdapter(sqlCommand, sqlConnection);
+                da.Fill(ds);
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
+        public DataTable ClientByName(string name)
+        {
+
+            var ds = new DataTable();
+            string connectionString = properties.GetConnectionString();
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            var sqlCommand = "Select * from Client where  Name ='" + name + "'" ;
+            try
+            {
+
+                var da = new SqlDataAdapter(sqlCommand, sqlConnection);
+                da.Fill(ds);
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                // File.WriteAllText(@"c:\temp\bugs\bug" + DateTime.Now.ToString() + ".txt", e.ToString());
+
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return ds;
+        }
     }
     
 }

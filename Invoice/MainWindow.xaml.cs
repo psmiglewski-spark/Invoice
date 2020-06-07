@@ -164,7 +164,7 @@ namespace Invoice
             var loginWindow = new LoginWindow();
             loginWindow.ShowDialog();
             var client = new Client();
-            // client.CheckWl("6972171117","2020-04-30");
+          //  MessageBox.Show(client.CheckNip("6972171117","2020-04-30").name);
             var dt = new DataTable();
             var db = new DataBase();
             FakturyDrukujMenuItem.Click += DrukujMenuItem_Click;

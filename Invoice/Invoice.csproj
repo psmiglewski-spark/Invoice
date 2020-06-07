@@ -40,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>69AD126EAE7799C8F62A8562B504C9D67EDAA1EB</ManifestCertificateThumbprint>
@@ -112,9 +114,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="InvoiceClasses\Client.cs" />
+    <Compile Include="InvoiceClasses\ClientData.cs" />
     <Compile Include="InvoiceClasses\Currency.cs" />
     <Compile Include="InvoiceClasses\CurrencyTable.cs" />
     <Compile Include="InvoiceClasses\DataBase.cs" />
+    <Compile Include="InvoiceClasses\WlResult.cs" />
+    <Compile Include="InvoiceClasses\WlResultClass.cs" />
     <Compile Include="Lib\Email.cs" />
     <Compile Include="Lib\Extension.cs" />
     <Compile Include="ViewElements\ClientListClass.cs" />

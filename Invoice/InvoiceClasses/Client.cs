@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Invoice.InvoiceClasses;
+using Newtonsoft.Json;
 
 
 namespace Invoice
@@ -178,14 +180,40 @@ namespace Invoice
         } 
         
         // White list account check 
-        public void CheckWl(string nip, string date)
+        public ClientData CheckNip(string nip, string date)
         {
+            var _result = new ClientData();
+            var _wlResultClass = new WlResultClass();
+            var _wlResult = new WlResult();
             var t = Task.Run(() => GetURI(new Uri("https://wl-api.mf.gov.pl/api/search/nip/" + nip + "?" + "date=" + date)));
             t.Wait();
             
             MessageBox.Show(t.Result);
 
-           
+            string jsonString;
+
+
+            jsonString = t.Result;
+            _wlResultClass = JsonConvert.DeserializeObject<WlResultClass>(jsonString);
+            _wlResult = _wlResultClass.result;
+            _result = _wlResult.subject;
+
+
+
+            return _result;
+
+
+        }
+
+        public void CheckWLAccount(string accountNr, string nip)
+        {
+            
+            var t = Task.Run(() => GetURI(new Uri("https://wl-api.mf.gov.pl/api/search/nip/" + nip + "/bank-accounts/" + accountNr )));
+            t.Wait();
+
+            MessageBox.Show(t.Result);
+            
+
 
         }
     }

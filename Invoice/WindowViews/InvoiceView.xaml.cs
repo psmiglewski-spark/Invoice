@@ -213,6 +213,8 @@ namespace Invoice
                 DateTime.TryParse(di.Rows[0]["Sale_Date"].ToString(), out saleDate);
                 DateTime.TryParse(di.Rows[0]["Payment_Date"].ToString(), out paymentDate);
                 clientNameTxtBox.Text = di.Rows[0]["Client_Name"].ToString();
+                clientNameTxtBox.DropDownOpened += ClientNameTxtBox_DropDownOpened;
+                
                 clientAddressTxtBox.Text = di.Rows[0]["Client_Address_Street"].ToString();
                 clientAddressPosNumberTxtBox.Text = di.Rows[0]["Client_Address_Pos_Number"].ToString();
                 clientAddressLocNumberTxtBox.Text = di.Rows[0]["Client_Address_Loc_Number"].ToString();
@@ -237,16 +239,78 @@ namespace Invoice
                 splitPaymentAccountCBox.SelectedItem = di.Rows[0]["Vat_Account"].ToString();
                 currencyCBox.ItemsSource = currencyCodeList;
                 currencyCBox.SelectedItem = di.Rows[0]["Currency"].ToString();
+                if (di.Rows[0]["Currency"].ToString() == " ")
+                {
+                    currencyCBox.SelectedItem = "PLN";
+                }
                 if ((int) di.Rows[0]["SplitPayment"] == 1)
                 {
                     splitPaymentCheckBox.IsChecked = true;
 
                 }
+                clientNameTxtBox.SelectionChanged += ClientNameTxtBox_SelectionChanged;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString());
             }
+        }
+
+        private void ClientNameTxtBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var db = new DataBase();
+            string _client = " ";
+            try
+            {
+               _client = clientNameTxtBox.SelectedValue.ToString();
+            }
+            catch (Exception exception)
+            {
+            }   
+            
+            var dt = db.ClientByName(_client);
+            
+            //int.TryParse(dt.Rows[0]["ClientId"].ToString(), out var res);
+            try
+            {
+                System.Windows.Forms.MessageBox.Show(dt.Rows[0]["ClientId"].ToString());
+                clientAddressTxtBox.Text = dt.Rows[0]["Client_Address_Street"].ToString();
+                clientAddressPosNumberTxtBox.Text = dt.Rows[0]["Client_Address_Pos_Number"].ToString();
+                clientAddressLocNumberTxtBox.Text = dt.Rows[0]["Client_Address_Loc_Number"].ToString();
+                ClientPostalCodeTxtBox.Text = dt.Rows[0]["Client_Address_Postal_Code"].ToString();
+                ClientCityTxtBox.Text = dt.Rows[0]["Client_Address_City"].ToString();
+                ClientCountryTxtBox.Text = dt.Rows[0]["Client_Address_Country"].ToString();
+                NipTxtBox.Text = dt.Rows[0]["NIP"].ToString();
+                TelephoneTxtBox.Text = dt.Rows[0]["Phone_Number"].ToString();
+                EMailTxtBox.Text = dt.Rows[0]["Email"].ToString();
+                clientIdTxtBox.Text = dt.Rows[0]["ID_Client"].ToString();
+            }
+            catch (Exception exception)
+            {
+              //  Console.WriteLine(exception);
+               
+            }
+           
+        }
+
+        private void ClientNameTxtBox_DropDownOpened(object sender, EventArgs e)
+        {
+            var db = new DataBase();
+            var dt = db.ClientListFilteredName(clientNameTxtBox.Text);
+            var clientList = new List<string>(); 
+            try
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    clientList.Add(dr["Name"].ToString());
+                }
+            }
+            catch (Exception cliente)
+            {
+                MessageBox.Show(cliente.ToString());
+            }
+
+            clientNameTxtBox.ItemsSource = clientList;
         }
 
         private void InvoicePositionViewLoad(int id)

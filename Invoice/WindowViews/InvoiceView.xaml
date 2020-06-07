@@ -9,7 +9,7 @@
     <Grid>
         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="197" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="340"/>
         <Label x:Name="label" Content="Odbiorca faktury:" HorizontalAlignment="Left" Margin="11,24,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="clientNameTxtBox" BorderThickness="0" Text="Client Name" HorizontalAlignment="Left" Margin="72,49,0,0" VerticalAlignment="Top" Width="272"/>
+        <ComboBox x:Name="clientNameTxtBox" IsEditable="True" BorderThickness="0" Text="Client Name" HorizontalAlignment="Left" Margin="72,49,0,0" VerticalAlignment="Top" Width="272"/>
         <TextBox x:Name="clientAddressTxtBox" BorderThickness="0" Text="Client Address" HorizontalAlignment="Left" Margin="16,80,0,0" VerticalAlignment="Top" Width="226" />
         <TextBox x:Name="ClientPostalCodeTxtBox" BorderThickness="0" Text="Postal code" HorizontalAlignment="Left" Margin="16,111,0,0" VerticalAlignment="Top" Width="69"/>
         <TextBox x:Name="NipTxtBox" Text="NIP: 6972171117" BorderThickness="0" HorizontalAlignment="Left" Margin="16,137,0,0" VerticalAlignment="Top" Width="111"/>
